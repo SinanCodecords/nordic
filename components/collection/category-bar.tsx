@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { CompareCount } from "@/components/compare/compare-button";
+import { cn } from "@/lib/utils";
 import { CATEGORY_LINKS } from "./data";
 
 const link = "shrink-0 font-heading text-sm leading-5 tracking-[-0.15px] text-muted-foreground transition-colors hover:text-foreground";
@@ -20,8 +22,9 @@ export function CategoryBar() {
           </Link>
         ))}
         <span aria-hidden className="ml-auto h-5 w-px shrink-0 bg-border" />
-        <Link href="/compare" className={link}>
+        <Link href="/compare" className={cn(link, "flex items-center")}>
           Compare
+          <CompareCount />
         </Link>
         <Link href="/account/orders" className={link}>
           Track Order

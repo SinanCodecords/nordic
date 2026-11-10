@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { CompareButton } from "@/components/compare/compare-button";
 import { formatPrice } from "@/lib/shopify/helpers";
 import type { Money } from "@/lib/shopify/types";
 import { cn } from "@/lib/utils";
@@ -79,9 +80,7 @@ export function ProductCard({ product, layout = "grid", imageClassName = "h-[290
       <div className={cn("space-y-2 p-4", list && "flex min-w-0 flex-1 flex-col justify-center sm:p-6")}>
         <div className="flex justify-between text-[11px] leading-[14px] font-medium text-muted-foreground">
           <span className="tracking-[0.3px] uppercase">{product.vendor}</span>
-          <button type="button" className="relative z-10 hover:text-foreground">
-            Compare
-          </button>
+          <CompareButton handle={product.handle} title={product.title} />
         </div>
 
         <h3 className="truncate type-product-title font-semibold">
