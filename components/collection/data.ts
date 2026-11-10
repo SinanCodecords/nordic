@@ -28,6 +28,28 @@ export const COLLECTIONS: Record<string, CollectionData> = {
       "sport-trail-runners",
     ),
   },
+  men: {
+    title: "Men",
+    description: "Modern essentials and elevated staples for everyday wear.",
+    products: pickProducts(
+      "structured-cotton-oxford-shirt",
+      "relaxed-selvedge-denim",
+      "merino-crewneck-sweater",
+      "essential-cotton-tee",
+      "quilted-liner-jacket",
+    ),
+  },
+  women: {
+    title: "Women",
+    description: "Considered pieces designed for life in motion.",
+    products: pickProducts(
+      "tailored-wool-blazer",
+      "silk-slip-dress",
+      "relaxed-chino-pants",
+      "cashmere-cardigan",
+      "pleated-midi-skirt",
+    ),
+  },
 };
 
 /** Links in the category bar under the header. */

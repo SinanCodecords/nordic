@@ -25,6 +25,7 @@ const ROWS: Row[] = [
   ["silk-slip-dress", "Silk Slip Dress", "Cove", "Trending", 142, 185, 4.6, 127, ["#e6d7c1", "#1c1917"]],
   ["merino-crewneck-sweater", "Merino Crewneck Sweater", "Forme", "Best Seller", 94, 120, 4.8, 186, ["#44403c", "#c19a6b"]],
   ["essential-cotton-tee", "Essential Cotton Tee", "Kinfolk", "Best Seller", 28, 38, 4.4, 398, ["#1c1917", "#d4a72c", "#dc2626"]],
+  ["relaxed-chino-pants", "Relaxed Chino Pants", "Kinfolk", "Trending", 68, 88, 4.3, 110, ["#c3b091", "#1e3a5f"], "pleated-midi-skirt"],
   ["cashmere-cardigan", "Cashmere Cardigan", "Forme", "Best Seller", 168, 220, 4.9, 156, ["#e7e0d4", "#d4a5a5"], "merino-crewneck-sweater"],
   ["pleated-midi-skirt", "Pleated Midi Skirt", "Kinfolk", "New", 78, 98, 4.3, 72, ["#556b2f", "#1c1917"]],
   ["leather-loafers", "Leather Loafers", "Meridian", "New", 148, 195, 4.8, 94, ["#c19a6b", "#8b4513"]],
