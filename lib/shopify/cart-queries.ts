@@ -14,13 +14,17 @@ const cartFragment = /* GraphQL */ `
       nodes {
         id
         quantity
-        cost { totalAmount { amount currencyCode } }
+        cost {
+          totalAmount { amount currencyCode }
+          amountPerQuantity { amount currencyCode }
+          compareAtAmountPerQuantity { amount currencyCode }
+        }
         merchandise {
           ... on ProductVariant {
             id
             title
             image { ...ImageFields }
-            product { handle title featuredImage { ...ImageFields } }
+            product { handle title vendor featuredImage { ...ImageFields } }
           }
         }
       }

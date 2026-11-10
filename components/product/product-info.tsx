@@ -1,8 +1,9 @@
 "use client";
 
-import { Check, Heart, MapPin, Minus, Plus, Share2, ShoppingBag, Zap } from "lucide-react";
+import { Check, Heart, MapPin, Share2, ShoppingBag, Zap } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { QuantitySelector } from "@/components/shared/quantity-selector";
 import { Stars } from "@/components/shared/stars";
 import { Button } from "@/components/ui/button";
 import { discountPercent, formatPrice } from "@/lib/shopify/helpers";
@@ -103,29 +104,7 @@ export function ProductInfo({ product }: Props) {
 
       <div>
         <p className="pb-2 text-sm leading-5 font-semibold">Quantity</p>
-        <div className="inline-flex items-center rounded-md border">
-          <button
-            type="button"
-            aria-label="Decrease quantity"
-            disabled={quantity <= 1}
-            onClick={() => setQuantity((q) => q - 1)}
-            className="grid size-10 place-items-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-          >
-            <Minus className="size-4" />
-          </button>
-          <span className="w-10 text-center type-label" aria-live="polite">
-            {quantity}
-          </span>
-          <button
-            type="button"
-            aria-label="Increase quantity"
-            disabled={soldOut || quantity >= product.stock}
-            onClick={() => setQuantity((q) => q + 1)}
-            className="grid size-10 place-items-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-          >
-            <Plus className="size-4" />
-          </button>
-        </div>
+        <QuantitySelector value={quantity} onChange={setQuantity} max={product.stock} disabled={soldOut} />
       </div>
 
       <div className="flex gap-3">

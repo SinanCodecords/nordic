@@ -11,12 +11,12 @@ export const CART_COOKIE = "cartId";
 export type CartLine = {
   id: string;
   quantity: number;
-  cost: { totalAmount: Money };
+  cost: { totalAmount: Money; amountPerQuantity: Money; compareAtAmountPerQuantity: Money | null };
   merchandise: {
     id: string;
     title: string;
     image: Image | null;
-    product: { handle: string; title: string; featuredImage: Image | null };
+    product: { handle: string; title: string; vendor: string; featuredImage: Image | null };
   };
 };
 
