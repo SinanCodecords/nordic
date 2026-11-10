@@ -36,7 +36,9 @@ export function HeaderShell({ children }: { children: ReactNode }) {
   );
 }
 
-export function HeaderSearch({ className, onSearch }: { className?: string; onSearch?: () => void }) {
+type HeaderSearchProps = { className?: string; inputClassName?: string; defaultValue?: string; onSearch?: () => void };
+
+export function HeaderSearch({ className, inputClassName, defaultValue, onSearch }: HeaderSearchProps) {
   const router = useRouter();
 
   return (
@@ -55,7 +57,11 @@ export function HeaderSearch({ className, onSearch }: { className?: string; onSe
         name="q"
         aria-label="Search products"
         placeholder="Search products..."
-        className="h-9 rounded-md border-border bg-field font-heading text-sm tracking-[-0.15px] placeholder:text-placeholder"
+        value={defaultValue} // seeds the box; the input keeps its own state while typing
+        className={cn(
+          "h-9 rounded-md border-border bg-field font-heading text-sm tracking-[-0.15px] placeholder:text-placeholder",
+          inputClassName,
+        )}
       />
     </form>
   );
