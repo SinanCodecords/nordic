@@ -1,9 +1,10 @@
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/shopify/helpers";
 import type { Money } from "@/lib/shopify/types";
 import { cn } from "@/lib/utils";
+import { Stars } from "./stars";
 
 /** What a product card shows. Shaped like Shopify data so it can be swapped for real products later. */
 export type ProductCardData = {
@@ -116,17 +117,7 @@ export function ProductCard({ product, layout = "grid", imageClassName = "h-[290
 function Rating({ value, count }: { value: number; count: number }) {
   return (
     <div className="flex items-center gap-1.5 text-xs leading-4">
-      <span className="flex gap-0.5" role="img" aria-label={`Rated ${value} out of 5`}>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <Star
-            key={i}
-            className={cn(
-              "size-3 stroke-2",
-              i <= Math.round(value) ? "fill-star text-star" : "text-[#e4e4e7] dark:text-border",
-            )}
-          />
-        ))}
-      </span>
+      <Stars value={value} />
       <span className="font-medium">{value}</span>
       <span className="text-muted-foreground">({count})</span>
     </div>

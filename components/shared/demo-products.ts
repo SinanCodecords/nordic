@@ -73,3 +73,9 @@ export function pickProducts(...handles: string[]): ProductCardData[] {
     return product;
   });
 }
+
+export function getDemoProduct(handle: string): ProductCardData | undefined {
+  return PRODUCTS.get(handle);
+}
+
+export const DEMO_PRODUCT_HANDLES = [...PRODUCTS.keys()];
