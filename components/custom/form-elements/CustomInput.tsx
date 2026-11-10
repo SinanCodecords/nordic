@@ -10,8 +10,19 @@ interface CustomInputProps extends BaseFormFieldProps, InputHTMLAttributes<HTMLI
 const CustomInput = ({ type, ...props }: CustomInputProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 
-	// biome-ignore lint/correctness/noUnusedVariables: we are extracting error and showHint use in the input component
-	const { error, showHint, ...inputProps } = props;
+	// Keep wrapper-only props (label, hint, wrapperClass…) off the <input> element.
+	const {
+		error: _error,
+		showHint: _showHint,
+		label: _label,
+		hint: _hint,
+		hintclass: _hintclass,
+		description: _description,
+		wrapperClass: _wrapperClass,
+		labelId: _labelId,
+		className: _className,
+		...inputProps
+	} = props;
 	const isPassword = type === "password";
 	const inputType = isPassword && showPassword ? "text" : type;
 
@@ -20,6 +31,7 @@ const CustomInput = ({ type, ...props }: CustomInputProps) => {
 			{(id, describedBy) => (
 				<div className="relative">
 					<Input
+						{...inputProps}
 						id={id}
 						type={inputType}
 						className={cn(
@@ -29,7 +41,6 @@ const CustomInput = ({ type, ...props }: CustomInputProps) => {
 						)}
 						aria-describedby={describedBy}
 						aria-invalid={!!props.error}
-						{...inputProps}
 					/>
 					{isPassword && (
 						<button

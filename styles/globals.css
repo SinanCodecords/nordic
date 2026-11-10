@@ -36,6 +36,7 @@
   /* Figma-only tokens */
   --color-brand: #dad42c; /* Brand/Citron, same in both themes */
   --color-hero-cta: #0a0a0a; /* Brand/HeroCTA, dark in both themes */
+  --color-lime: #e0e230; /* Electric Lime, hero background (mood board) */
   --color-selected: var(--selected);
   --color-elevated: var(--elevated);
   --color-overlay: var(--overlay);
@@ -151,6 +152,19 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgb(255 255 255 / 10%);
   --sidebar-ring: #737373;
+}
+
+/* On pages with the lime hero, the logo and nav sit on lime and stay dark in both themes. */
+@layer base {
+  body:has([data-lime-hero]) [data-on-hero] {
+    --foreground: #171717;
+    --foreground-secondary: #4b4b4b;
+  }
+}
+
+/* Page content width: 1280px centred (80px gutters on the 1440px Figma frame). */
+@utility content-width {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 xl:px-0;
 }
 
 /*

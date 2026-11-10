@@ -14,12 +14,24 @@ interface CustomTextAreaProps
 }
 
 const CustomTextArea = ({ resize = true, ...props }: CustomTextAreaProps) => {
-	// biome-ignore lint/correctness/noUnusedVariables: we are extracting error and showHint use in the text component
-	const { error, showHint, ...textAreaProps } = props;
+	// Keep wrapper-only props (label, hint, wrapperClass…) off the <textarea> element.
+	const {
+		error: _error,
+		showHint: _showHint,
+		label: _label,
+		hint: _hint,
+		hintclass: _hintclass,
+		description: _description,
+		wrapperClass: _wrapperClass,
+		labelId: _labelId,
+		className: _className,
+		...textAreaProps
+	} = props;
 	return (
 		<FormFieldWrapper {...props}>
 			{(id, describedBy) => (
 				<Textarea
+					{...textAreaProps}
 					id={id}
 					className={cn(
 						!resize && "resize-none",
@@ -28,7 +40,6 @@ const CustomTextArea = ({ resize = true, ...props }: CustomTextAreaProps) => {
 					)}
 					aria-describedby={describedBy}
 					aria-invalid={!!props.error}
-					{...textAreaProps}
 				/>
 			)}
 		</FormFieldWrapper>
