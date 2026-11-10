@@ -40,6 +40,9 @@ const ROWS: Row[] = [
   ["polarized-sunglasses", "Polarized Sunglasses", "Lumen", "New", 98, 130, 4.4, 178, ["#8b4513", "#1c1917"]],
   ["quilted-liner-jacket", "Quilted Liner Jacket", "Northwind", "New", 118, 150, 4.5, 88, ["#556b2f", "#1c1917"], "essential-cotton-tee"],
   ["sport-trail-runners", "Sport Trail Runners", "Stride", "New", 108, 140, 4.4, 156, ["#f97316", "#3b5b8c"]],
+  ["wireless-noise-cancel-headphones", "Wireless Noise-Cancel Headphones", "Lumen", "Best Seller", 248, 320, 4.8, 426, ["#f5f5f4", "#1c1917"]],
+  ["true-wireless-earbuds", "True Wireless Earbuds", "Lumen", "Trending", 128, 170, 4.5, 312, ["#f5f5f4", "#1c1917"]],
+  ["portable-bluetooth-speaker", "Portable Bluetooth Speaker", "Lumen", "Best Seller", 88, 120, 4.6, 275, ["#1c1917", "#f5f5f4"]],
 ];
 
 const SOLD_OUT = new Set(["knit-slip-on-mules"]);

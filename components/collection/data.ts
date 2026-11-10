@@ -73,6 +73,11 @@ export const COLLECTIONS: Record<string, CollectionData> = {
       "minimalist-leather-wallet",
     ),
   },
+  electronics: {
+    title: "Electronics",
+    description: "Audio and tech essentials with clean design.",
+    products: pickProducts("wireless-noise-cancel-headphones", "true-wireless-earbuds", "portable-bluetooth-speaker"),
+  },
 };
 
 /** Links in the category bar under the header. */
