@@ -17,26 +17,55 @@ export type ProductCardData = {
   rating: number;
   reviewCount: number;
   swatches: string[];
+  /** false when every variant is sold out (Shopify `availableForSale`). */
+  available?: boolean;
 };
 
-export function ProductCard({ product }: { product: ProductCardData }) {
+type ProductCardProps = {
+  product: ProductCardData;
+  /** "grid" stacks the image above the details; "list" puts them side by side. */
+  layout?: "grid" | "list";
+  /** Image area size, e.g. "h-[215px]". Defaults to the landing page size. */
+  imageClassName?: string;
+  preload?: boolean;
+};
+
+export function ProductCard({ product, layout = "grid", imageClassName = "h-[290px]", preload }: ProductCardProps) {
   const href = `/products/${product.handle}`;
+  const soldOut = product.available === false;
+  const list = layout === "list";
 
   return (
-    <article className="group relative overflow-hidden rounded-lg border border-[#e4e4e7] bg-card dark:border-border">
-      <div className="relative h-[290px] bg-elevated">
+    <article
+      className={cn(
+        "group relative overflow-hidden rounded-lg border border-[#e4e4e7] bg-card dark:border-border",
+        list && "flex",
+      )}
+    >
+      <div className={cn("relative shrink-0 bg-elevated", list ? "w-36 sm:w-56" : imageClassName)}>
         <Image
           src={product.image}
           alt={product.title}
           fill
-          sizes="(min-width: 1280px) 302px, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          preload={preload}
+          sizes={list ? "224px" : "(min-width: 1280px) 302px, (min-width: 640px) 50vw, 100vw"}
+          className={cn(
+            "object-cover transition-transform duration-500 group-hover:scale-[1.03]",
+            soldOut && "opacity-60",
+          )}
         />
-        {product.badge && (
-          <span className="absolute top-3 left-3 rounded bg-primary px-2.5 py-1 type-badge text-[11px] leading-[13px] text-primary-foreground">
-            {product.badge}
-          </span>
-        )}
+        <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
+          {product.badge && (
+            <span className="rounded bg-primary px-2.5 py-1 type-badge text-[11px] leading-[13px] text-primary-foreground">
+              {product.badge}
+            </span>
+          )}
+          {soldOut && (
+            <span className="rounded border bg-overlay px-2.5 py-0.5 type-badge text-foreground backdrop-blur-sm">
+              Out of Stock
+            </span>
+          )}
+        </div>
         <button
           type="button"
           aria-label={`Add ${product.title} to wishlist`}
@@ -46,7 +75,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         </button>
       </div>
 
-      <div className="space-y-2 p-4">
+      <div className={cn("space-y-2 p-4", list && "flex min-w-0 flex-1 flex-col justify-center sm:p-6")}>
         <div className="flex justify-between text-[11px] leading-[14px] font-medium text-muted-foreground">
           <span className="tracking-[0.3px] uppercase">{product.vendor}</span>
           <button type="button" className="relative z-10 hover:text-foreground">
@@ -91,7 +120,10 @@ function Rating({ value, count }: { value: number; count: number }) {
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            className={cn("size-3 stroke-2", i <= Math.floor(value) ? "text-star" : "text-[#e4e4e7] dark:text-border")}
+            className={cn(
+              "size-3 stroke-2",
+              i <= Math.round(value) ? "fill-star text-star" : "text-[#e4e4e7] dark:text-border",
+            )}
           />
         ))}
       </span>
