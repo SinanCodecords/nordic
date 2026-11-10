@@ -46,7 +46,7 @@ Every form field shares the props from `BaseFormFieldProps` (`types/custom.ts`):
 |---|---|---|
 | `CustomInput` | Text, email, number, password (has a show/hide eye button) | All `<input>` props |
 | `CustomTextArea` | Multi-line text | All `<textarea>` props, `resize` |
-| `CustomSelect` | Dropdown | `options` (`string[]` or `{ value, label, disabled? }[]`), `value` / `defaultValue`, `onValueChange`, `placeholder`, `icon`, `creatable`, `onCreateOption`, `maxHeight` |
+| `CustomSelect` | Dropdown | `options` (`string[]` or `{ value, label, disabled? }[]`), `name` (for form submits), `value` / `defaultValue`, `onValueChange`, `placeholder`, `icon`, `creatable`, `onCreateOption`, `maxHeight` |
 | `MultipleSelector` | Multi-select with search and tags | `options`, `value` / `defaultOptions`, `onChange(Option[])`, `onValueChange(string[])`, `maxSelected`, `groupBy`, `creatable`, `onSearch` (async), `searchable` |
 | `CustomCheckbox` | One checkbox | `checked` / `defaultChecked`, `onCheckedChange` |
 | `CustomSwitch` | On/off toggle | `checked` / `defaultChecked`, `onCheckedChange` |

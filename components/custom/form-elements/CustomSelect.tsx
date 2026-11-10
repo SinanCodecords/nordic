@@ -68,6 +68,10 @@ interface CustomSelectProps extends BaseFormFieldProps {
 	 * @property maxHeight - Maximum height for the dropdown content (defaults to "20rem").
 	 */
 	maxHeight?: string;
+	/**
+	 * @property name - Field name, so the selected value is sent with a regular form submit.
+	 */
+	name?: string;
 }
 
 const CustomSelect = ({
@@ -172,6 +176,7 @@ const CustomSelect = ({
 		<FormFieldWrapper {...props}>
 			{(id, describedBy) => (
 				<Select
+					name={props.name}
 					value={props.value}
 					defaultValue={props.defaultValue}
 					onValueChange={props.onValueChange}

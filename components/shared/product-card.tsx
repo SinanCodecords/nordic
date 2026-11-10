@@ -1,7 +1,7 @@
-import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { CompareButton } from "@/components/compare/compare-button";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { formatPrice } from "@/lib/shopify/helpers";
 import type { Money } from "@/lib/shopify/types";
 import { cn } from "@/lib/utils";
@@ -68,13 +68,11 @@ export function ProductCard({ product, layout = "grid", imageClassName = "h-[290
             </span>
           )}
         </div>
-        <button
-          type="button"
-          aria-label={`Add ${product.title} to wishlist`}
-          className="absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-full border border-[#e4e4e7] bg-overlay text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground dark:border-border"
-        >
-          <Heart className="size-4" />
-        </button>
+        <WishlistButton
+          handle={product.handle}
+          title={product.title}
+          className="absolute top-3 right-3 z-10 size-8 border-[#e4e4e7] dark:border-border"
+        />
       </div>
 
       <div className={cn("space-y-2 p-4", list && "flex min-w-0 flex-1 flex-col justify-center sm:p-6")}>

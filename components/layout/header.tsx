@@ -1,12 +1,13 @@
 import { Heart, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
+import { WishlistCount } from "@/components/wishlist/wishlist-button";
 import { NAV_LINKS } from "./data";
 import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
 
 const ICON_LINKS = [
   { label: "Account", href: "/account", icon: User },
-  { label: "Wishlist", href: "/wishlist", icon: Heart },
+  { label: "Wishlist", href: "/account/wishlist", icon: Heart },
   { label: "Cart", href: "/cart", icon: ShoppingBag },
 ];
 
@@ -38,9 +39,10 @@ export function Header() {
             key={href}
             href={href}
             aria-label={label}
-            className="grid size-9 place-items-center rounded-full border transition-colors hover:bg-accent"
+            className="relative grid size-9 place-items-center rounded-full border transition-colors hover:bg-accent"
           >
             <Icon className="size-5 stroke-[1.5]" />
+            {label === "Wishlist" && <WishlistCount />}
           </Link>
         ))}
       </div>

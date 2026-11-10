@@ -1,10 +1,11 @@
 "use client";
 
-import { Check, Heart, MapPin, Share2, ShoppingBag, Zap } from "lucide-react";
+import { Check, MapPin, Share2, ShoppingBag, Zap } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { QuantitySelector } from "@/components/shared/quantity-selector";
 import { Stars } from "@/components/shared/stars";
+import { TrackRecentlyViewed, WishlistButton } from "@/components/wishlist/wishlist-button";
 import { Button } from "@/components/ui/button";
 import { discountPercent, formatPrice } from "@/lib/shopify/helpers";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ export function ProductInfo({ product }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <TrackRecentlyViewed handle={product.handle} />
       <div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium tracking-[0.2px] text-muted-foreground uppercase">{product.vendor}</span>
@@ -114,13 +116,12 @@ export function ProductInfo({ product }: Props) {
         <Button size="lg" variant="secondary" className="flex-1 px-8" disabled={soldOut} onClick={notConnected}>
           <Zap /> Buy Now
         </Button>
-        <button
-          type="button"
-          aria-label={`Add ${product.title} to wishlist`}
-          className="grid size-10 shrink-0 place-items-center rounded-full border bg-overlay text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Heart className="size-5 stroke-[1.5]" />
-        </button>
+        <WishlistButton
+          handle={product.handle}
+          title={product.title}
+          className="size-10 shrink-0"
+          iconClassName="size-5 stroke-[1.5]"
+        />
       </div>
 
       <hr className="border-muted" />
