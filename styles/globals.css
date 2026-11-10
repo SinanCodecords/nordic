@@ -1,26 +1,242 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
+/*
+ * Colours come from the Figma "Brand & Interactive / Neutral / Semantic" pages.
+ * Standard shadcn names are mapped onto the Figma tokens; extra Figma tokens
+ * (brand, selected, overlay, success, star…) are added below them.
+ */
 @theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-heading);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Figma-only tokens */
+  --color-brand: #dad42c; /* Brand/Citron, same in both themes */
+  --color-hero-cta: #0a0a0a; /* Brand/HeroCTA, dark in both themes */
+  --color-selected: var(--selected);
+  --color-elevated: var(--elevated);
+  --color-overlay: var(--overlay);
+  --color-field: var(--field);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-placeholder: var(--placeholder);
+  --color-success: #059669;
+  --color-star: #fbbf24;
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #ffffff; /* Background/Default */
+  --foreground: #171717; /* Text/Primary */
+  --card: #ffffff; /* Surface/Default */
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #0a0a0a; /* Interactive/Primary */
+  --primary-foreground: #ffffff; /* Interactive/OnPrimary */
+  --secondary: #f5f5f5; /* Surface/Elevated */
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373; /* Text/Muted */
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --destructive: #dc2828; /* Semantic/Destructive */
+  --border: #e5e5e5; /* Border/Default */
+  --input: #e5e5e5;
+  --ring: #a1a1a1; /* focus not defined in Figma yet */
+
+  --selected: #171717; /* Interactive/Selected */
+  --elevated: #f5f5f5; /* Surface/Elevated */
+  --overlay: rgb(255 255 255 / 80%); /* Surface/Overlay (wishlist chip) */
+  --field: rgb(229 229 229 / 50%); /* Surface/Input */
+  --foreground-secondary: #4b4b4b; /* Text/Secondary */
+  --placeholder: #afafaf; /* Text/Placeholder */
+
+  --radius: 0.625rem;
+  --chart-1: #d4d4d4;
+  --chart-2: #737373;
+  --chart-3: #525252;
+  --chart-4: #404040;
+  --chart-5: #262626;
+  --sidebar: #f5f5f5;
+  --sidebar-foreground: #171717;
+  --sidebar-primary: #0a0a0a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e5e5e5;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #a1a1a1;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #ffffff;
+  --card: #09090b;
+  --card-foreground: #ffffff;
+  --popover: #171717;
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #09090b;
+  --secondary: #171717;
+  --secondary-foreground: #ffffff;
+  --muted: #171717;
+  --muted-foreground: #a1a1a1;
+  --accent: #171717;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2828;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 15%);
+  --ring: #737373;
+
+  --selected: #ffffff;
+  --elevated: #171717;
+  --overlay: rgb(9 9 11 / 80%);
+  --field: rgb(23 23 23 / 50%);
+  --foreground-secondary: #a1a1a1;
+  --placeholder: #a1a1a1;
+
+  --chart-1: #d4d4d4;
+  --chart-2: #a1a1a1;
+  --chart-3: #737373;
+  --chart-4: #525252;
+  --chart-5: #404040;
+  --sidebar: #171717;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #09090b;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 10%);
+  --sidebar-ring: #737373;
+}
+
+/*
+ * Type scale from the Figma "Typography" page.
+ * Named type-* (not text-*) so class merging never mixes them up with text colours.
+ */
+@utility type-hero {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 101px;
+  line-height: 110%;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+@utility type-page-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: -0.354px;
+}
+@utility type-section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.53px;
+}
+@utility type-product-title {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19.25px;
+  letter-spacing: -0.15px;
+}
+@utility type-nav {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+@utility type-ui-heading {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.449px;
+}
+@utility type-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+@utility type-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+@utility type-badge {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+}
+@utility type-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background type-body text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
