@@ -4,6 +4,7 @@ import { Logo } from "@/components/shared/logo";
 import { WishlistCount } from "@/components/wishlist/wishlist-button";
 import { NAV_LINKS } from "./data";
 import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
+import { MobileMenu } from "./mobile-menu";
 
 const ICON_LINKS = [
   { label: "Account", href: "/account", icon: User },
@@ -14,6 +15,7 @@ const ICON_LINKS = [
 export function Header() {
   return (
     <HeaderShell>
+      <MobileMenu />
       <Logo data-on-hero className="w-[100px] shrink-0 text-foreground" />
 
       <nav data-on-hero aria-label="Main" className="hidden items-center gap-1 pl-4 lg:flex">
@@ -32,7 +34,7 @@ export function Header() {
         <HeaderSearch />
       </div>
 
-      <div className="ml-auto flex items-center gap-1 md:ml-2">
+      <div data-on-hero-mobile className="ml-auto flex items-center gap-1 text-foreground md:ml-2">
         <ThemeToggle />
         {ICON_LINKS.map(({ label, href, icon: Icon }) => (
           <Link

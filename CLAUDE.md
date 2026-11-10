@@ -13,7 +13,7 @@ Next.js 16 storefront. Shopify is the backend (see `lib/shopify/` and `SHOPIFY-S
 
 - `app/page.tsx` only composes sections. Section components go in `components/<area>/` (`home/`, `layout/`, `collection/`), and pieces reused across areas go in `components/shared/` (`product-card`, `demo-products`, `section-header`, `logo`, `social-icons`).
 - Images from the Figma file are in `public/images/` (`hero/`, `products/`, `brand/`, `marketing/`), named by what they show. `FIGMA.fig` (git-ignored) is the source.
-- Plain CSS rules in `styles/globals.css` must sit inside `@layer base { }`. Top-level rules are dropped by the Tailwind build.
+- Plain CSS rules in `styles/globals.css` must sit inside `@layer base { }`. Top-level rules are dropped by the Tailwind build. For a breakpoint inside such a rule use `@variant max-lg { … }`; a nested `@media` is dropped too.
 
 ## Checks before finishing a change
 

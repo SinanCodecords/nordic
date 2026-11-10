@@ -161,6 +161,13 @@
     --foreground: #171717;
     --foreground-secondary: #4b4b4b;
   }
+  /* Below 1024px the lime runs under the whole header, including the icons on the right. */
+  body:has([data-lime-hero]) header:not([data-scrolled]) [data-on-hero-mobile] {
+    @variant max-lg {
+      --foreground: #171717;
+      --border: rgb(23 23 23 / 15%);
+    }
+  }
 }
 
 /* Page content width: 1280px centred (80px gutters on the 1440px Figma frame). */

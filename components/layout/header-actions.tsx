@@ -36,17 +36,19 @@ export function HeaderShell({ children }: { children: ReactNode }) {
   );
 }
 
-export function HeaderSearch() {
+export function HeaderSearch({ className, onSearch }: { className?: string; onSearch?: () => void }) {
   const router = useRouter();
 
   return (
     <form
       role="search"
-      className="w-[277px]"
+      className={cn("w-[277px]", className)}
       onSubmit={(e) => {
         e.preventDefault();
         const q = String(new FormData(e.currentTarget).get("q") ?? "").trim();
-        if (q) router.push(`/search?q=${encodeURIComponent(q)}`);
+        if (!q) return;
+        router.push(`/search?q=${encodeURIComponent(q)}`);
+        onSearch?.();
       }}
     >
       <CustomSearchInput
