@@ -15,6 +15,21 @@ export type CustomerOrder = {
   statusPageUrl: string;
   totalPrice: Money;
   lineItems: { nodes: { title: string; quantity: number }[] };
+  /** OrderFulfillmentStatus, e.g. UNFULFILLED, PARTIALLY_FULFILLED, FULFILLED. */
+  fulfillmentStatus: string;
+  cancelledAt: string | null;
+  fulfillments: { nodes: CustomerFulfillment[] };
+};
+
+export type CustomerFulfillment = {
+  id: string;
+  /** FulfillmentStatus: SUCCESS, CANCELLED, ERROR, FAILURE. */
+  status: string | null;
+  /** FulfillmentEventStatus: LABEL_PRINTED, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED… */
+  latestShipmentStatus: string | null;
+  estimatedDeliveryAt: string | null;
+  updatedAt: string;
+  trackingInformation: { company: string | null; number: string | null; url: string | null }[];
 };
 
 export type Customer = {
@@ -39,6 +54,18 @@ const customerQuery = /* GraphQL */ `
           statusPageUrl
           totalPrice { amount currencyCode }
           lineItems(first: 10) { nodes { title quantity } }
+          fulfillmentStatus
+          cancelledAt
+          fulfillments(first: 5) {
+            nodes {
+              id
+              status
+              latestShipmentStatus
+              estimatedDeliveryAt
+              updatedAt
+              trackingInformation { company number url }
+            }
+          }
         }
       }
     }

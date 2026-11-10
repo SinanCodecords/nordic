@@ -26,7 +26,7 @@ export function CategoryBar() {
           Compare
           <CompareCount />
         </Link>
-        <Link href="/account/orders" className={link}>
+        <Link href="/track-order" className={link}>
           Track Order
         </Link>
       </nav>
