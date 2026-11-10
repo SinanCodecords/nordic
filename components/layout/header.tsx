@@ -2,7 +2,7 @@ import { Heart, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
 import { NAV_LINKS } from "./data";
-import { HeaderSearch, ThemeToggle } from "./header-actions";
+import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
 
 const ICON_LINKS = [
   { label: "Account", href: "/account", icon: User },
@@ -12,7 +12,7 @@ const ICON_LINKS = [
 
 export function Header() {
   return (
-    <header className="relative z-30 flex h-[69px] items-center gap-3 px-4 sm:px-6 lg:pr-[55px] lg:pl-[78px]">
+    <HeaderShell>
       <Logo data-on-hero className="w-[100px] shrink-0 text-foreground" />
 
       <nav data-on-hero aria-label="Main" className="hidden items-center gap-1 pl-4 lg:flex">
@@ -44,6 +44,6 @@ export function Header() {
           </Link>
         ))}
       </div>
-    </header>
+    </HeaderShell>
   );
 }

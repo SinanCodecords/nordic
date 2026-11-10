@@ -154,9 +154,10 @@
   --sidebar-ring: #737373;
 }
 
-/* On pages with the lime hero, the logo and nav sit on lime and stay dark in both themes. */
+/* On pages with the lime hero, the logo and nav sit on lime and stay dark in both themes
+   (until the page is scrolled and the sticky header gets its own background). */
 @layer base {
-  body:has([data-lime-hero]) [data-on-hero] {
+  body:has([data-lime-hero]) header:not([data-scrolled]) [data-on-hero] {
     --foreground: #171717;
     --foreground-secondary: #4b4b4b;
   }
