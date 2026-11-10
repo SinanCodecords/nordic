@@ -50,6 +50,29 @@ export const COLLECTIONS: Record<string, CollectionData> = {
       "pleated-midi-skirt",
     ),
   },
+  shoes: {
+    title: "Shoes",
+    description: "Footwear built for comfort, made for everyday.",
+    products: pickProducts(
+      "stride-runner-sneakers",
+      "court-classic-sneakers",
+      "leather-loafers",
+      "knit-slip-on-mules",
+      "sport-trail-runners",
+    ),
+  },
+  accessories: {
+    title: "Accessories",
+    description: "The finishing details that complete the look.",
+    products: pickProducts(
+      "structured-tote-handbag",
+      "automatic-wristwatch",
+      "pearl-layering-necklace",
+      "leather-weekender-bag",
+      "polarized-sunglasses",
+      "minimalist-leather-wallet",
+    ),
+  },
 };
 
 /** Links in the category bar under the header. */
