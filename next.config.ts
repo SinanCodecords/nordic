@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/s/files/**",
+      },
+    ],
+  },
+  // The https tunnel used to test Shopify login locally.
+  allowedDevOrigins: ["*.ngrok-free.app", "*.ngrok-free.dev"],
   experimental: {
     agentFeedback: true,
   },
