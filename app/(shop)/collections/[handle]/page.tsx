@@ -2,24 +2,34 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { COLLECTIONS, CollectionResults, CollectionResultsSkeleton } from "@/components/collection";
+import type { CollectionData } from "@/components/collection/data";
+import { toProductCard } from "@/components/shared/from-shopify";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCollection, getCollections } from "@/lib/shopify";
 import CustomBreadcrumb from "~/CustomBreadcrumb";
 
 type Props = PageProps<"/collections/[handle]">;
 
-async function getCollection(params: Props["params"]) {
-  const collection = COLLECTIONS[(await params).handle];
+async function loadCollection(params: Props["params"]): Promise<CollectionData & { seoTitle?: string }> {
+  const { handle } = await params;
+  const collection = await getCollection(handle);
   if (!collection) notFound();
-  return collection;
+  return {
+    title: collection.title,
+    // Our own wording is the fallback while the collection's description is empty in Shopify.
+    description: collection.description || COLLECTIONS[handle]?.description || "",
+    seoTitle: collection.seo.title ?? undefined,
+    products: collection.products.map(toProductCard),
+  };
 }
 
-export function generateStaticParams() {
-  return Object.keys(COLLECTIONS).map((handle) => ({ handle }));
+export async function generateStaticParams() {
+  return (await getCollections()).map(({ handle }) => ({ handle }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { title, description } = await getCollection(params);
-  return { title, description };
+  const { title, seoTitle, description } = await loadCollection(params);
+  return { title: seoTitle ?? title, description };
 }
 
 // The title is prerendered per collection; the filtered products stream in because they read the URL.
@@ -37,7 +47,7 @@ export default function CollectionPage({ params, searchParams }: Props) {
 }
 
 async function CollectionHeading({ params }: Pick<Props, "params">) {
-  const { title, description } = await getCollection(params);
+  const { title, description } = await loadCollection(params);
   return (
     <>
       <CustomBreadcrumb
@@ -45,13 +55,13 @@ async function CollectionHeading({ params }: Pick<Props, "params">) {
         currentClassName="font-medium"
       />
       <h1 className="pt-4 type-page-title">{title}</h1>
-      <p className="pt-2 type-body text-muted-foreground">{description}</p>
+      {description && <p className="pt-2 type-body text-muted-foreground">{description}</p>}
     </>
   );
 }
 
 async function Results({ params, searchParams }: Props) {
-  return <CollectionResults collection={await getCollection(params)} searchParams={searchParams} />;
+  return <CollectionResults collection={await loadCollection(params)} searchParams={searchParams} />;
 }
 
 function HeadingSkeleton() {

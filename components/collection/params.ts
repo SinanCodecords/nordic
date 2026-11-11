@@ -41,7 +41,8 @@ export const hasActiveFilters = ({ brand, min, max, rating }: CollectionParams) 
 
 const price = (p: ProductCardData) => Number(p.price.amount);
 
-// TODO: once Shopify is connected, pass these as `filters` to the collection products query instead.
+// Filtering runs here rather than in Shopify's query: each collection is fetched (and cached) once, so
+// changing a filter needs no new Shopify request. Fine for collections of up to a few hundred products.
 export function filterProducts(products: ProductCardData[], params: CollectionParams) {
   const { brand, min, max, rating, sort } = params;
   const result = products.filter(
@@ -54,7 +55,10 @@ export function filterProducts(products: ProductCardData[], params: CollectionPa
 
   switch (sort) {
     case "newest":
-      return result.toReversed();
+      // Demo products have no date; their lists are oldest-first.
+      return result.every((p) => p.createdAt)
+        ? result.toSorted((a, b) => b.createdAt!.localeCompare(a.createdAt!))
+        : result.toReversed();
     case "price-asc":
       return result.toSorted((a, b) => price(a) - price(b));
     case "price-desc":

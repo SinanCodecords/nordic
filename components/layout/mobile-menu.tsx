@@ -8,7 +8,6 @@ import { CompareCount } from "@/components/compare/compare-button";
 import { Logo } from "@/components/shared/logo";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { NAV_LINKS } from "./data";
 import { HeaderSearch, ThemeToggle } from "./header-actions";
 
 const MORE_LINKS = [
@@ -20,7 +19,7 @@ const MORE_LINKS = [
 ];
 
 /** Menu button and slide-out panel for screens below 1024px, where the header links are hidden. */
-export function MobileMenu() {
+export function MobileMenu({ links }: { links: { label: string; href: string }[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -57,8 +56,8 @@ export function MobileMenu() {
           <nav aria-label="Shop">
             <p className="px-3 pb-1 type-eyebrow text-muted-foreground">Shop</p>
             <ul>
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
+              {links.map((link) => (
+                <li key={`${link.label}-${link.href}`}>
                   <SheetClose asChild>
                     <Link
                       href={link.href}

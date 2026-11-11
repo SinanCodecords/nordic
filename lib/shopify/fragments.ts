@@ -13,6 +13,7 @@ export const productFragment = /* GraphQL */ `
     handle
     title
     vendor
+    createdAt
     description
     descriptionHtml
     productType

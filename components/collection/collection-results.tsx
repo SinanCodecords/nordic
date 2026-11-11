@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { CollectionFilters } from "./collection-filters";
 import { CollectionStateProvider, PendingArea } from "./collection-state";
 import { CollectionToolbar } from "./collection-toolbar";
-import { BRANDS, type CollectionData } from "./data";
+import type { CollectionData } from "./data";
 import { filterProducts, loadCollectionParams } from "./params";
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
 export async function CollectionResults({ collection, searchParams }: Props) {
   const params = await loadCollectionParams(searchParams);
   const products = filterProducts(collection.products, params);
+  const brands = [...new Set(collection.products.map((p) => p.vendor).filter(Boolean))].sort();
   const list = params.view === "list";
 
   return (
@@ -25,7 +26,7 @@ export async function CollectionResults({ collection, searchParams }: Props) {
       </div>
 
       <div className="grid gap-6 pt-6 lg:grid-cols-[238px_1fr]">
-        <CollectionFilters brands={BRANDS} />
+        <CollectionFilters brands={brands} />
 
         <PendingArea className="min-w-0 transition-opacity data-pending:opacity-60">
           {products.length ? (
@@ -38,7 +39,9 @@ export async function CollectionResults({ collection, searchParams }: Props) {
             </ul>
           ) : (
             <p className="rounded-lg border border-dashed py-16 text-center type-body text-muted-foreground">
-              No products match these filters. Try another brand, price or rating.
+              {collection.products.length
+                ? "No products match these filters. Try another brand, price or rating."
+                : "No products here yet. Check back soon."}
             </p>
           )}
         </PendingArea>

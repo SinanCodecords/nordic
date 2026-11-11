@@ -10,9 +10,6 @@ export type CollectionData = {
   products: ProductCardData[];
 };
 
-/** Brand filter options, in the order the Figma sidebar lists them. */
-export const BRANDS = ["Northwind", "Atlas", "Forme", "Stride", "Lumen", "Kinfolk", "Meridian", "Cove"];
-
 export const COLLECTIONS: Record<string, CollectionData> = {
   "new-arrivals": {
     title: "New Arrivals",

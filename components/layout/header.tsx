@@ -2,6 +2,7 @@ import { Heart, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
 import { WishlistCount } from "@/components/wishlist/wishlist-button";
+import { getMenu } from "@/lib/shopify/menu";
 import { NAV_LINKS } from "./data";
 import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
 import { MobileMenu } from "./mobile-menu";
@@ -12,16 +13,19 @@ const ICON_LINKS = [
   { label: "Cart", href: "/cart", icon: ShoppingBag },
 ];
 
-export function Header() {
+/** The links come from the "main-menu" menu in Shopify admin (Content → Menus). */
+export async function Header() {
+  const links = await getMenu("main-menu", NAV_LINKS);
+
   return (
     <HeaderShell>
-      <MobileMenu />
+      <MobileMenu links={links} />
       <Logo data-on-hero className="w-[100px] shrink-0 text-foreground" />
 
       <nav data-on-hero aria-label="Main" className="hidden items-center gap-1 pl-4 lg:flex">
-        {NAV_LINKS.map((link) => (
+        {links.map((link) => (
           <Link
-            key={link.href}
+            key={`${link.label}-${link.href}`}
             href={link.href}
             className="rounded-md px-3 py-2 type-nav text-foreground-secondary transition-colors hover:text-foreground"
           >

@@ -26,5 +26,6 @@ export function toProductCard(product: Product): ProductCardData {
     ...productRating(product),
     swatches: optionValues(product, "color", "colour").map((v) => colorHex(v.name, v.swatch?.color)),
     available: product.availableForSale,
+    createdAt: product.createdAt,
   };
 }

@@ -1,11 +1,16 @@
 import { ArrowUp } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
+import { getMenu } from "@/lib/shopify/menu";
 import { STORE } from "@/lib/store-info";
-import { FOOTER_COLUMNS, SOCIAL_LINKS } from "./data";
+import { FOOTER_COLUMNS, NAV_LINKS, SOCIAL_LINKS } from "./data";
 import { NewsletterForm } from "./newsletter-form";
 
-export function Footer() {
+export async function Footer() {
+  // The Shop column repeats the header menu from Shopify.
+  const shop = await getMenu("main-menu", NAV_LINKS);
+  const columns = [{ title: "Shop", links: shop }, ...FOOTER_COLUMNS.slice(1)];
+
   return (
     <footer className="bg-elevated pt-12 pb-10">
       <div className="content-width">
@@ -34,12 +39,12 @@ export function Footer() {
             </ul>
           </div>
 
-          {FOOTER_COLUMNS.map((column) => (
+          {columns.map((column) => (
             <div key={column.title}>
               <h3 className="text-sm leading-5 font-semibold tracking-[-0.24px]">{column.title}</h3>
               <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={`${link.label}-${link.href}`}>
                     <Link
                       href={link.href}
                       className="text-sm leading-5 tracking-[-0.24px] text-foreground-secondary hover:text-foreground"

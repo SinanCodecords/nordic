@@ -96,3 +96,23 @@ export const getProductStockQuery = /* GraphQL */ `
     }
   }
 `;
+
+export const getCollectionQuery = /* GraphQL */ `
+  query getCollection($handle: String!, $first: Int!) {
+    collection(handle: $handle) {
+      handle
+      title
+      description
+      seo {
+        title
+        description
+      }
+      products(first: $first) {
+        nodes {
+          ...ProductFields
+        }
+      }
+    }
+  }
+  ${productFragment}
+`;

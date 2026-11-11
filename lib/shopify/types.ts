@@ -24,6 +24,7 @@ export type Product = {
   handle: string;
   title: string;
   vendor: string;
+  createdAt: string;
   description: string;
   descriptionHtml: string;
   productType: string;

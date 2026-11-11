@@ -23,6 +23,8 @@ export type ProductCardData = {
   swatches: string[];
   /** false when every variant is sold out (Shopify `availableForSale`). */
   available?: boolean;
+  /** When the product was added in Shopify, for "Newest" sorting. Missing on demo products. */
+  createdAt?: string;
 };
 
 type ProductCardProps = {
