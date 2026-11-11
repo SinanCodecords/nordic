@@ -23,7 +23,7 @@ type Props = {
 export function ProductTabs({ product, reviews, canReview }: Props) {
   return (
     <Tabs defaultValue="description" className="gap-0 pt-12">
-      <div className="overflow-x-auto [scrollbar-width:none]">
+      <div className="overflow-x-auto scrollbar-none">
         <TabsList className="h-9 rounded-lg p-1">
           <TabsTrigger value="description" className={trigger}>Description</TabsTrigger>
           <TabsTrigger value="specifications" className={trigger}>Specifications</TabsTrigger>
@@ -44,7 +44,7 @@ export function ProductTabs({ product, reviews, canReview }: Props) {
             <tbody>
               {product.specifications.map(([label, value]) => (
                 <tr key={label} className="h-11 even:bg-transparent odd:bg-elevated">
-                  <th scope="row" className="w-1/3 px-4 text-left font-medium sm:w-[260px]">
+                  <th scope="row" className="w-1/3 px-4 text-left font-medium sm:w-65">
                     {label}
                   </th>
                   <td className="px-4 text-muted-foreground">{value}</td>
