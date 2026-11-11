@@ -10,6 +10,7 @@ type ProductSectionProps = {
 };
 
 export function ProductSection({ title, subtitle, viewAllHref, products, className }: ProductSectionProps) {
+  if (!products.length) return null;
   return (
     <section className={className}>
       <div className="content-width py-14">

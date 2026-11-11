@@ -4,7 +4,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { shopifyFetch } from "./client";
 import { reshapeProduct } from "./helpers";
 import { getCollectionProductsQuery, getCollectionQuery, getCollectionsQuery, getProductsQuery } from "./queries";
-import type { Collection, Product, ShopifyProduct } from "./types";
+import type { Collection, Image, Product, ShopifyProduct } from "./types";
 
 export async function getCollections(): Promise<Collection[]> {
   "use cache";
@@ -33,6 +33,7 @@ export type CollectionWithProducts = {
   handle: string;
   title: string;
   description: string;
+  image: Image | null;
   seo: { title: string | null; description: string | null };
   /** In the order set in Shopify admin (Collection → Sort). */
   products: Product[];
@@ -58,7 +59,7 @@ export async function getCollection(handle: string): Promise<CollectionWithProdu
       sortKey: "BEST_SELLING",
     });
     const products = all.products.edges.map((e) => reshapeProduct(e.node));
-    return { handle, title: "All Products", description: "", seo: { title: null, description: null }, products };
+    return { handle, title: "All Products", description: "", image: null, seo: { title: null, description: null }, products };
   }
   return { ...data.collection, products: data.collection.products.nodes.map(reshapeProduct) };
 }

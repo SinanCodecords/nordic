@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SectionHeader } from "@/components/shared/section-header";
-import { CATEGORIES } from "./data";
+import { getCategoryTiles } from "./data";
 
-export function Categories() {
+/** Tiles for the Shopify category collections. */
+export async function Categories() {
+  const categories = await getCategoryTiles();
+  if (!categories.length) return null;
+
   return (
     <section className="content-width py-14">
       <SectionHeader title="Shop by Category" subtitle="Find exactly what you need." />
       <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-        {CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <Link
             key={category.href}
             href={category.href}

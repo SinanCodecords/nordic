@@ -103,6 +103,9 @@ export const getCollectionQuery = /* GraphQL */ `
       handle
       title
       description
+      image {
+        ...ImageFields
+      }
       seo {
         title
         description
