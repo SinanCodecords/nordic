@@ -1,6 +1,7 @@
 import { ArrowUp } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
+import { STORE } from "@/lib/store-info";
 import { FOOTER_COLUMNS, SOCIAL_LINKS } from "./data";
 import { NewsletterForm } from "./newsletter-form";
 
@@ -13,8 +14,8 @@ export function Footer() {
         <div className="grid gap-10 pt-14 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Logo />
-            <p className="mt-3 max-w-[221px] text-sm leading-5 tracking-[-0.24px] text-foreground-secondary">
-              Build beautiful UIs faster with production-ready shadcn components.
+            <p className="mt-3 max-w-[240px] text-sm leading-5 tracking-[-0.24px] text-foreground-secondary">
+              {STORE.tagline} Clothing, shoes, accessories and tech, chosen to be used for years.
             </p>
             <ul className="mt-5 flex gap-2.5">
               {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
@@ -38,12 +39,12 @@ export function Footer() {
               <h3 className="text-sm leading-5 font-semibold tracking-[-0.24px]">{column.title}</h3>
               <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.href}>
                     <Link
-                      href="#"
+                      href={link.href}
                       className="text-sm leading-5 tracking-[-0.24px] text-foreground-secondary hover:text-foreground"
                     >
-                      {link}
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -53,7 +54,7 @@ export function Footer() {
         </div>
 
         <div className="relative mt-14 border-t pt-6 text-center text-sm leading-5 tracking-[-0.24px]">
-          © 2026 <span className="font-semibold">NORDIC</span> UI Kit. All rights reserved.
+          © 2026 <span className="font-semibold">NORDIC</span>. All rights reserved.
           <a
             href="#top"
             aria-label="Back to top"

@@ -7,6 +7,8 @@ import type { ProductCardData } from "@/components/shared/product-card";
 // images, options (Color / Size), variants and description all come from there.
 
 export type ProductDetail = ProductCardData & {
+  /** Shopify product ID (gid://shopify/Product/123). Missing on demo products; reviews need it. */
+  id?: string;
   category: { label: string; href: string };
   images: string[];
   colors: { name: string; hex: string }[];

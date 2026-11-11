@@ -1,3 +1,4 @@
+import { policyHref } from "@/lib/store-info";
 import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from "@/components/shared/social-icons";
 
 export const NAV_LINKS = [
@@ -9,11 +10,26 @@ export const NAV_LINKS = [
   { label: "Electronics", href: "/collections/electronics" },
 ];
 
-// Footer copy is as written in the Figma file (UI-kit placeholder text).
 export const FOOTER_COLUMNS = [
-  { title: "Product", links: ["Components", "Templates", "Icons", "Theme Generator"] },
-  { title: "Company", links: ["About", "Blog", "Changelog", "Pricing"] },
-  { title: "Support", links: ["Documentation", "GitHub", "Discord", "Contact"] },
+  { title: "Shop", links: NAV_LINKS },
+  {
+    title: "Help",
+    links: [
+      { label: "Contact Us", href: "/contact" },
+      { label: "Track Order", href: "/track-order" },
+      { label: "Shipping", href: policyHref("shipping-policy") },
+      { label: "Returns & Refunds", href: policyHref("refund-policy") },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", href: "/about" },
+      { label: "My Account", href: "/account" },
+      { label: "Privacy Policy", href: policyHref("privacy-policy") },
+      { label: "Terms of Service", href: policyHref("terms-of-service") },
+    ],
+  },
 ];
 
 export const SOCIAL_LINKS = [

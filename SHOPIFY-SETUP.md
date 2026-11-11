@@ -61,6 +61,28 @@ NEXT_PUBLIC_BASE_URL=https://nordic-abc.ngrok-free.app
 
 Never share or commit this file.
 
+## 10. Store policies
+- **Settings → Policies** → write (or generate) Shipping, Refund, Privacy and Terms of Service
+- They show on the site at `/policies/...` (linked from the footer)
+
+## 11. Reviews (Judge.me)
+- Install **Judge.me Product Reviews** from the Shopify App Store
+- Judge.me → **Settings → Integrations → View API token** → copy the **Private API token**
+- Add to `.env`: `JUDGEME_PRIVATE_TOKEN=`
+
+## 12. Newsletter (Klaviyo)
+- Install **Klaviyo** from the Shopify App Store and create a list (e.g. "Newsletter")
+- Klaviyo → **Settings → API keys** → copy the **Public API key / Site ID** (6 characters)
+- Klaviyo → **Lists & segments** → your list → **Settings** → copy the **List ID**
+- Add to `.env`:
+  ```
+  NEXT_PUBLIC_KLAVIYO_COMPANY_ID=
+  NEXT_PUBLIC_KLAVIYO_LIST_ID=
+  ```
+
+## 13. Support email
+- Put your real support address in `lib/store-info.ts` (shown on Contact and used by the contact form)
+
 ## Optional
 - Want to test coupons? Create one in **Discounts**.
 - Store has a password? Checkout will ask for it while testing. That's normal.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getProductDetail, ProductGallery, ProductInfo, ProductTabs } from "@/components/product";
+import { getProductReviews, reviewsEnabled } from "@/lib/reviews/judgeme";
 import { ProductCard } from "@/components/shared/product-card";
 import { DEMO_PRODUCT_HANDLES } from "@/components/shared/demo-products";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,6 +37,7 @@ export default function ProductPage({ params }: Props) {
 
 async function Product({ params }: Pick<Props, "params">) {
   const product = await getProduct(params);
+  const reviews = await getProductReviews(product.id);
 
   return (
     <>
@@ -53,7 +55,7 @@ async function Product({ params }: Pick<Props, "params">) {
         <ProductInfo product={product} />
       </div>
 
-      <ProductTabs product={product} />
+      <ProductTabs product={product} reviews={reviews} canReview={reviewsEnabled && !!product.id} />
 
       {product.related.length > 0 && (
         <section className="pt-14">
