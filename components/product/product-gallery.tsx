@@ -3,6 +3,7 @@
 import { ZoomIn } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { NoImage } from "@/components/shared/product-card";
 import { cn } from "@/lib/utils";
 
 /** Main photo that zooms toward the cursor on hover, with thumbnails when there's more than one photo. */
@@ -20,19 +21,22 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
         }}
         onMouseLeave={() => setOrigin(null)}
       >
-        <Image
-          src={images[active]}
-          alt={title}
-          fill
-          preload
-          sizes="(min-width: 1280px) 628px, (min-width: 1024px) 50vw, 100vw"
-          style={origin ? { transformOrigin: origin } : undefined}
-          className={cn("object-cover transition-transform duration-200", origin && "scale-200")}
-        />
+        {images.length === 0 && <NoImage />}
+        {images.length > 0 && (
+          <Image
+            src={images[active]}
+            alt={title}
+            fill
+            preload
+            sizes="(min-width: 1280px) 628px, (min-width: 1024px) 50vw, 100vw"
+            style={origin ? { transformOrigin: origin } : undefined}
+            className={cn("object-cover transition-transform duration-200", origin && "scale-200")}
+          />
+        )}
         <span
           className={cn(
             "pointer-events-none absolute right-3 bottom-3 hidden items-center gap-1.5 rounded-full bg-overlay px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-opacity md:flex",
-            origin && "opacity-0",
+            (origin || images.length === 0) && "opacity-0",
           )}
         >
           <ZoomIn className="size-3.5" /> Hover to zoom

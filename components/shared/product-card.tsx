@@ -1,3 +1,4 @@
+import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { CompareButton } from "@/components/compare/compare-button";
@@ -12,6 +13,7 @@ export type ProductCardData = {
   handle: string;
   title: string;
   vendor: string;
+  /** Empty when the product has no photo yet. */
   image: string;
   badge?: "Trending" | "New" | "Best Seller";
   price: Money;
@@ -45,17 +47,21 @@ export function ProductCard({ product, layout = "grid", imageClassName = "h-[290
       )}
     >
       <div className={cn("relative shrink-0 bg-elevated", list ? "w-36 sm:w-56" : imageClassName)}>
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          preload={preload}
-          sizes={list ? "224px" : "(min-width: 1280px) 302px, (min-width: 640px) 50vw, 100vw"}
-          className={cn(
-            "object-cover transition-transform duration-500 group-hover:scale-[1.03]",
-            soldOut && "opacity-60",
-          )}
-        />
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.title}
+            fill
+            preload={preload}
+            sizes={list ? "224px" : "(min-width: 1280px) 302px, (min-width: 640px) 50vw, 100vw"}
+            className={cn(
+              "object-cover transition-transform duration-500 group-hover:scale-[1.03]",
+              soldOut && "opacity-60",
+            )}
+          />
+        ) : (
+          <NoImage />
+        )}
         <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
           {product.badge && (
             <span className="rounded bg-primary px-2.5 py-1 type-badge text-[11px] leading-[13px] text-primary-foreground">
@@ -115,8 +121,23 @@ function Rating({ value, count }: { value: number; count: number }) {
   return (
     <div className="flex items-center gap-1.5 text-xs leading-4">
       <Stars value={value} />
-      <span className="font-medium">{value}</span>
-      <span className="text-muted-foreground">({count})</span>
+      {count > 0 ? (
+        <>
+          <span className="font-medium">{value}</span>
+          <span className="text-muted-foreground">({count})</span>
+        </>
+      ) : (
+        <span className="text-muted-foreground">No reviews yet</span>
+      )}
+    </div>
+  );
+}
+
+/** Shown when a product has no photo in Shopify yet. */
+export function NoImage({ className }: { className?: string }) {
+  return (
+    <div className={cn("absolute inset-0 grid place-items-center text-muted-foreground/50", className)}>
+      <ImageOff className="size-8 stroke-[1.25]" aria-label="No photo yet" />
     </div>
   );
 }

@@ -23,6 +23,7 @@ export type Product = {
   id: string;
   handle: string;
   title: string;
+  vendor: string;
   description: string;
   descriptionHtml: string;
   productType: string;
@@ -32,14 +33,24 @@ export type Product = {
   images: Image[];
   priceRange: { minVariantPrice: Money };
   compareAtPriceRange: { minVariantPrice: Money };
-  options: { name: string; values: string[] }[];
+  options: {
+    name: string;
+    values: string[];
+    /** `swatch.color` is set when the store picks a colour for the value in Shopify admin. */
+    optionValues: { name: string; swatch: { color: string | null } | null }[];
+  }[];
   variants: ProductVariant[];
+  /** Same order as the fragment's identifiers; null when a product has no value. */
+  metafields: (Metafield | null)[];
 };
+
+export type Metafield = { namespace: string; key: string; value: string };
 
 export type Collection = {
   id: string;
   handle: string;
   title: string;
+  vendor: string;
   description: string;
   image: Image | null;
 };

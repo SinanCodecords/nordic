@@ -72,3 +72,27 @@ export const getCollectionProductsQuery = /* GraphQL */ `
   }
   ${productFragment}
 `;
+
+export const getProductHandlesQuery = /* GraphQL */ `
+  query getProductHandles($first: Int!) {
+    products(first: $first) {
+      nodes {
+        handle
+      }
+    }
+  }
+`;
+
+/** Separate from the product query: it needs the "product inventory" API permission, and stock changes more often. */
+export const getProductStockQuery = /* GraphQL */ `
+  query getProductStock($handle: String!) {
+    product(handle: $handle) {
+      variants(first: 100) {
+        nodes {
+          id
+          quantityAvailable
+        }
+      }
+    }
+  }
+`;

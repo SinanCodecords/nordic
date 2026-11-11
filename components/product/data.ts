@@ -1,10 +1,11 @@
 import { COLLECTIONS } from "@/components/collection/data";
+import { COLORS } from "@/components/shared/colors";
 import { getDemoProduct } from "@/components/shared/demo-products";
 import type { ProductCardData } from "@/components/shared/product-card";
 
-// Demo product details built from the Figma file, used until the Shopify store is connected.
-// Replace getProductDetail() with Shopify's `product(handle:)` query (lib/shopify) later:
-// images, options (Color / Size), variants and description all come from there.
+// What the product page shows. Real products come from Shopify (./from-shopify.ts).
+// getProductDetail() builds demo details from the Figma file; Compare, Search and the wishlist still use it
+// until those pages are connected.
 
 export type ProductDetail = ProductCardData & {
   /** Shopify product ID (gid://shopify/Product/123). Missing on demo products; reviews need it. */
@@ -16,6 +17,8 @@ export type ProductDetail = ProductCardData & {
   sizes: string[];
   /** Units left. Under 10 shows "Only N left". */
   stock: number;
+  /** Buyable variants. Empty on demo products, which can't be added to the bag. */
+  variants: DetailVariant[];
   highlights: string[];
   description: string;
   specifications: [label: string, value: string][];
@@ -25,35 +28,28 @@ export type ProductDetail = ProductCardData & {
   related: ProductCardData[];
 };
 
-const COLOR_NAMES: Record<string, string> = {
-  "#f5f5f4": "Ivory",
-  "#d6d3d1": "Stone",
-  "#a8a29e": "Silver",
-  "#1e3a5f": "Navy",
-  "#6b8cae": "Light Wash",
-  "#1c1917": "Black",
-  "#e6d7c1": "Champagne",
-  "#44403c": "Charcoal",
-  "#c19a6b": "Camel",
-  "#d4a72c": "Gold",
-  "#dc2626": "Red",
-  "#c3b091": "Khaki",
-  "#e7e0d4": "Oat",
-  "#d4a5a5": "Blush",
-  "#556b2f": "Olive",
-  "#a16207": "Tan",
-  "#f9a8d4": "Pink",
-  "#8b4513": "Brown",
-  "#c0c0c0": "Grey",
-  "#f97316": "Orange",
-  "#3b5b8c": "Blue",
+export type DetailVariant = {
+  /** Shopify variant ID, what the cart adds. */
+  id: string;
+  color?: string;
+  size?: string;
+  available: boolean;
+  /** Units left, or null when Shopify doesn't share stock counts. */
+  quantity: number | null;
+  price: ProductCardData["price"];
+  compareAtPrice?: ProductCardData["price"];
 };
 
-const SHIPPING = "Free standard shipping over $50. Express options at checkout.";
-const RETURNS = "30-day free returns. Items must be unworn with tags attached.";
+const COLOR_NAMES = Object.fromEntries(Object.entries(COLORS).map(([name, hex]) => [hex, name]));
 
-/** Details shared by every product in a category, so each demo product doesn't need its own copy. */
-const CATEGORY_DEFAULTS: Record<
+export const SHIPPING = "Free standard shipping over $50. Express options at checkout.";
+export const RETURNS = "30-day free returns. Items must be unworn with tags attached.";
+
+/**
+ * Details shared by every product in a category. Used when a product leaves the Highlights, Specifications
+ * or Materials boxes empty in Shopify, so each product doesn't need its own copy.
+ */
+export const CATEGORY_DEFAULTS: Record<
   string,
   Pick<ProductDetail, "sizes" | "highlights" | "description" | "specifications" | "materials">
 > = {
@@ -130,6 +126,7 @@ export function getProductDetail(handle: string): ProductDetail | undefined {
     images: [product.image],
     colors: product.swatches.map((hex) => ({ hex, name: COLOR_NAMES[hex] ?? hex })),
     stock: product.available === false ? 0 : 24,
+    variants: [],
     shipping: SHIPPING,
     returns: RETURNS,
     related: category.collection.products.filter((p) => p.handle !== handle).slice(0, 4),

@@ -12,6 +12,7 @@ export const productFragment = /* GraphQL */ `
     id
     handle
     title
+    vendor
     description
     descriptionHtml
     productType
@@ -42,6 +43,12 @@ export const productFragment = /* GraphQL */ `
     options {
       name
       values
+      optionValues {
+        name
+        swatch {
+          color
+        }
+      }
     }
     variants(first: 50) {
       edges {
@@ -63,6 +70,20 @@ export const productFragment = /* GraphQL */ `
           }
         }
       }
+    }
+    # Extra details typed in Shopify admin (Settings → Custom data), plus Judge.me's star rating.
+    metafields(
+      identifiers: [
+        { namespace: "custom", key: "highlights" }
+        { namespace: "custom", key: "specifications" }
+        { namespace: "custom", key: "materials" }
+        { namespace: "reviews", key: "rating" }
+        { namespace: "reviews", key: "rating_count" }
+      ]
+    ) {
+      namespace
+      key
+      value
     }
   }
   ${imageFragment}

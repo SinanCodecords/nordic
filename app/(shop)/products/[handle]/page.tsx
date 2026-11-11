@@ -1,28 +1,51 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getProductDetail, ProductGallery, ProductInfo, ProductTabs } from "@/components/product";
-import { getProductReviews, reviewsEnabled } from "@/lib/reviews/judgeme";
+import { ProductGallery, ProductInfo, ProductTabs } from "@/components/product";
+import { toProductDetail } from "@/components/product/from-shopify";
 import { ProductCard } from "@/components/shared/product-card";
-import { DEMO_PRODUCT_HANDLES } from "@/components/shared/demo-products";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getProductReviews, reviewsEnabled } from "@/lib/reviews/judgeme";
+import {
+  getCollectionProducts,
+  getProduct,
+  getProductHandles,
+  getProductRecommendations,
+  getProductStock,
+  type Product as ShopifyProduct,
+} from "@/lib/shopify";
 import CustomBreadcrumb from "~/CustomBreadcrumb";
 
 type Props = PageProps<"/products/[handle]">;
 
-async function getProduct(params: Props["params"]) {
-  const product = getProductDetail((await params).handle);
+async function loadProduct(params: Props["params"]) {
+  const product = await getProduct((await params).handle);
   if (!product) notFound();
   return product;
 }
 
-export function generateStaticParams() {
-  return DEMO_PRODUCT_HANDLES.map((handle) => ({ handle }));
+/** Others from the same collection first (like the design), then Shopify's own picks. */
+async function getRelated(product: ShopifyProduct) {
+  const collection = product.productType.toLowerCase().replace(/\s+/g, "-");
+  const [sameType, picks] = await Promise.all([
+    collection ? getCollectionProducts(collection, 8).catch(() => []) : [],
+    getProductRecommendations(product.id).catch(() => []),
+  ]);
+  const seen = new Set([product.handle]);
+  return [...sameType, ...picks].filter((p) => !seen.has(p.handle) && seen.add(p.handle));
+}
+
+export async function generateStaticParams() {
+  return (await getProductHandles()).map((handle) => ({ handle }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { title, description, image } = await getProduct(params);
-  return { title, description, openGraph: { images: [image] } };
+  const { title, description, featuredImage } = await loadProduct(params);
+  return {
+    title,
+    description: description.slice(0, 160),
+    openGraph: { images: featuredImage ? [featuredImage.url] : [] },
+  };
 }
 
 export default function ProductPage({ params }: Props) {
@@ -36,8 +59,18 @@ export default function ProductPage({ params }: Props) {
 }
 
 async function Product({ params }: Pick<Props, "params">) {
-  const product = await getProduct(params);
-  const reviews = await getProductReviews(product.id);
+  const shopifyProduct = await loadProduct(params);
+  const [reviews, stock, related] = await Promise.all([
+    getProductReviews(shopifyProduct.id),
+    getProductStock(shopifyProduct.handle),
+    getRelated(shopifyProduct),
+  ]);
+  const product = toProductDetail(shopifyProduct, { related, stock });
+  // Judge.me's reviews give the live average; the rating saved on the product can lag behind.
+  if (reviews.length) {
+    product.reviewCount = reviews.length;
+    product.rating = Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) * 10) / 10;
+  }
 
   return (
     <>

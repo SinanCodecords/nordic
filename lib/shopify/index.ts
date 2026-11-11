@@ -4,7 +4,9 @@ import { cacheLife, cacheTag } from "next/cache";
 import { shopifyFetch } from "./client";
 import {
   getCartQuantityQuery,
+  getProductHandlesQuery,
   getProductQuery,
+  getProductStockQuery,
   getProductRecommendationsQuery,
   getProductsQuery,
 } from "./queries";
@@ -48,6 +50,37 @@ export async function getProduct(handle: string): Promise<Product | null> {
     { handle },
   );
   return data.product ? reshapeProduct(data.product) : null;
+}
+
+/** Every product handle, for pre-building product pages. */
+export async function getProductHandles(): Promise<string[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
+
+  const data = await shopifyFetch<{ products: { nodes: { handle: string }[] } }>(getProductHandlesQuery, {
+    first: 250,
+  });
+  return data.products.nodes.map((p) => p.handle);
+}
+
+async function fetchProductStock(handle: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("products");
+
+  const data = await shopifyFetch<{
+    product: { variants: { nodes: { id: string; quantityAvailable: number | null }[] } } | null;
+  }>(getProductStockQuery, { handle });
+  return Object.fromEntries(data.product?.variants.nodes.map((v) => [v.id, v.quantityAvailable]) ?? []);
+}
+
+/**
+ * Units left per variant ID. Null when the storefront token lacks the "product inventory" permission,
+ * in which case the page only knows in stock / sold out.
+ */
+export async function getProductStock(handle: string): Promise<Record<string, number | null> | null> {
+  return fetchProductStock(handle).catch(() => null);
 }
 
 // Shopify's own "you may also like" picks for a product.
