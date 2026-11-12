@@ -1,14 +1,14 @@
-import { Heart, ShoppingBag, User } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/shared/logo";
 import { WishlistCount } from "@/components/wishlist/wishlist-button";
 import { getMenu } from "@/lib/shopify/menu";
+import { AccountLink } from "./account-link";
 import { NAV_LINKS } from "./data";
 import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
 import { MobileMenu } from "./mobile-menu";
 
 const ICON_LINKS = [
-  { label: "Account", href: "/account", icon: User },
   { label: "Wishlist", href: "/account/wishlist", icon: Heart },
   { label: "Cart", href: "/cart", icon: ShoppingBag },
 ];
@@ -45,6 +45,7 @@ export async function Header() {
 
       <div data-on-hero-mobile className="ml-auto flex items-center gap-1 text-foreground md:ml-2">
         <ThemeToggle />
+        <AccountLink />
         {ICON_LINKS.map(({ label, href, icon: Icon }) => (
           <Link
             key={href}
