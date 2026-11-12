@@ -129,14 +129,24 @@ async function customerFetch<T>(query: string, variables: Record<string, unknown
 
   const res = await fetch(`https://shopify.com/${shopId}/account/customer/api/${version}/graphql`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: session.accessToken },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: session.accessToken,
+      // Shopify checks requests against the JavaScript origin set for the Customer Account API.
+      Origin: process.env.NEXT_PUBLIC_BASE_URL ?? "",
+    },
     body: JSON.stringify({ query, variables }),
   });
   if (res.status === 401) return null;
-  if (!res.ok) throw new Error(`Customer Account API responded ${res.status}`);
+  if (!res.ok) {
+    throw new Error(`Customer Account API responded ${res.status}: ${(await res.text()).slice(0, 500)}`);
+  }
 
   const json = (await res.json()) as GraphQLResult<T>;
-  if (json.errors?.length) throw new Error(json.errors.map((e) => e.message).join("; "));
+  if (json.errors?.length) {
+    throw new Error(`Customer Account API: ${json.errors.map((e) => e.message).join("; ")}`);
+  }
   return json.data ?? null;
 }
 
