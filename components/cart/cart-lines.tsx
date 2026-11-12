@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NoImage } from "@/components/shared/product-card";
 import { type Cart, formatPrice } from "@/lib/shopify";
 import { LineControls } from "./line-controls";
 
@@ -19,7 +20,7 @@ export function CartLines({ cart }: { cart: Cart }) {
               href={href}
               className="relative size-20 shrink-0 overflow-hidden rounded-md border bg-elevated sm:size-28"
             >
-              {image && (
+              {image ? (
                 <Image
                   src={image.url}
                   alt={image.altText ?? product.title}
@@ -27,6 +28,8 @@ export function CartLines({ cart }: { cart: Cart }) {
                   sizes="112px"
                   className="object-cover"
                 />
+              ) : (
+                <NoImage />
               )}
             </Link>
 

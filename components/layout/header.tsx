@@ -22,7 +22,12 @@ export async function Header() {
       <MobileMenu links={links} />
       <Logo data-on-hero className="w-[100px] shrink-0 text-foreground" />
 
-      <nav data-on-hero aria-label="Main" className="hidden items-center gap-1 pl-4 lg:flex">
+      {/* min-w-0 + scroll: a long Shopify menu scrolls inside the bar instead of widening the page. */}
+      <nav
+        data-on-hero
+        aria-label="Main"
+        className="hidden min-w-0 items-center gap-1 overflow-x-auto pl-4 [scrollbar-width:none] lg:flex"
+      >
         {links.map((link) => (
           <Link
             key={`${link.label}-${link.href}`}

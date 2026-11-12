@@ -14,7 +14,7 @@ export function EmptyCart() {
         Looks like you haven&apos;t added anything yet. Explore our collection and find something you love.
       </p>
       <Button asChild className="mt-6">
-        <Link href="/collections/new-arrivals">Browse Products</Link>
+        <Link href="/collections/all">Browse Products</Link>
       </Button>
     </div>
   );

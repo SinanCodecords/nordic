@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CartLines, CartSummary, EmptyCart } from "@/components/cart";
-import { pickProducts } from "@/components/shared/demo-products";
+import { getHomeSection } from "@/components/home";
 import { ProductCard } from "@/components/shared/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCart } from "@/lib/shopify";
@@ -14,15 +14,10 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-// "Popular Right Now" from the Figma cart page. Swap for Shopify best sellers once connected.
-const POPULAR = pickProducts(
-  "structured-cotton-oxford-shirt",
-  "merino-crewneck-sweater",
-  "essential-cotton-tee",
-  "cashmere-cardigan",
-);
+export default async function CartPage() {
+  // "Popular Right Now": the Best Sellers collection, or Shopify's best sellers until it has products.
+  const popular = await getHomeSection("best-sellers", { sortKey: "BEST_SELLING", viewAllHref: "/collections/all" });
 
-export default function CartPage() {
   return (
     <div className="content-width pt-9 pb-24">
       <CustomBreadcrumb
@@ -34,14 +29,16 @@ export default function CartPage() {
         <CartContents />
       </Suspense>
 
-      <section className="pt-12">
-        <h2 className="type-section-heading">Popular Right Now</h2>
-        <div className="grid gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-4">
-          {POPULAR.map((p) => (
-            <ProductCard key={p.handle} product={p} />
-          ))}
-        </div>
-      </section>
+      {popular.products.length > 0 && (
+        <section className="pt-12">
+          <h2 className="type-section-heading">Popular Right Now</h2>
+          <div className="grid gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-4">
+            {popular.products.map((p) => (
+              <ProductCard key={p.handle} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
@@ -61,7 +58,7 @@ async function CartContents() {
         <div>
           <CartLines cart={cart} />
           <Link
-            href="/collections/new-arrivals"
+            href="/collections/all"
             className="mt-5 inline-flex items-center gap-1.5 type-label text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> Continue Shopping
