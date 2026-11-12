@@ -66,23 +66,24 @@ export async function getProductHandles(): Promise<string[]> {
   return data.products.nodes.map((p) => p.handle);
 }
 
-async function fetchProductStock(handle: string) {
-  "use cache";
-  cacheLife("minutes");
-  cacheTag("products");
-
-  const data = await shopifyFetch<{
-    product: { variants: { nodes: { id: string; quantityAvailable: number | null }[] } } | null;
-  }>(getProductStockQuery, { handle });
-  return Object.fromEntries(data.product?.variants.nodes.map((v) => [v.id, v.quantityAvailable]) ?? []);
-}
-
 /**
  * Units left per variant ID. Null when the storefront token lacks the "product inventory" permission,
  * in which case the page only knows in stock / sold out.
  */
 export async function getProductStock(handle: string): Promise<Record<string, number | null> | null> {
-  return fetchProductStock(handle).catch(() => null);
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("products");
+
+  // Caught in here, not by the caller: an error escaping a cached function is reported by the build.
+  try {
+    const data = await shopifyFetch<{
+      product: { variants: { nodes: { id: string; quantityAvailable: number | null }[] } } | null;
+    }>(getProductStockQuery, { handle });
+    return Object.fromEntries(data.product?.variants.nodes.map((v) => [v.id, v.quantityAvailable]) ?? []);
+  } catch {
+    return null;
+  }
 }
 
 // Shopify's own "you may also like" picks for a product.

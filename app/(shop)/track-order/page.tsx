@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 import { OrderEmptyState, OrderTrackingCard } from "@/components/orders";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,6 +30,8 @@ async function TrackOrderContents() {
   if (!(await isLoggedIn())) return <OrderEmptyState signedIn={false} returnTo="/track-order" />;
 
   const customer = await getCustomer().catch((error) => {
+    // Let Next handle its own signals (e.g. cookies() during the build), log real failures.
+    unstable_rethrow(error);
     console.error(error);
     return null;
   });

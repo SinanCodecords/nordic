@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 import { CartLines, CartSummary, EmptyCart } from "@/components/cart";
 import { getHomeSection } from "@/components/home";
@@ -46,6 +47,8 @@ export default async function CartPage() {
 // Reads the cart cookie, so it streams in after the static parts of the page.
 async function CartContents() {
   const cart = await getCart().catch((error) => {
+    // Let Next handle its own signals (e.g. cookies() during the build), log real failures.
+    unstable_rethrow(error);
     console.error(error);
     return null;
   });
