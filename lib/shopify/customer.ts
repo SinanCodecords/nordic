@@ -5,7 +5,10 @@ import { SESSION_COOKIE, unseal, type CustomerSession } from "./session";
 import type { Money } from "./types";
 
 const shopId = process.env.SHOPIFY_SHOP_ID;
-const version = process.env.SHOPIFY_API_VERSION ?? "2026-07";
+// The Customer Account API has its own version, separate from the Storefront API's SHOPIFY_API_VERSION.
+// 2026-10 is the first with CustomerAddress.countryCode (older versions call it territoryCode).
+// The store's current one is listed at https://<store>.myshopify.com/.well-known/customer-account-api
+const version = process.env.SHOPIFY_CUSTOMER_API_VERSION ?? "2026-10";
 
 export type CustomerOrder = {
   id: string;
