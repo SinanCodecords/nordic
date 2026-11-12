@@ -115,6 +115,21 @@ export async function getCustomerAccessToken() {
   return (await readSession())?.accessToken ?? null;
 }
 
+/**
+ * The signed-in shopper's email, read from the login token Shopify gave us, so it costs no API call.
+ * Null when nobody is signed in; `email` is null if Shopify left it out of the token.
+ */
+export async function getSignedInShopper(): Promise<{ email: string | null } | null> {
+  const session = await readSession();
+  if (!session) return null;
+  try {
+    const claims = JSON.parse(Buffer.from(session.idToken.split(".")[1] ?? "", "base64url").toString());
+    return { email: typeof claims.email === "string" ? claims.email : null };
+  } catch {
+    return { email: null };
+  }
+}
+
 /** True when a login cookie is present (the proxy already refreshed it if needed). */
 export async function isLoggedIn() {
   return Boolean(await readSession());

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, CreditCard, Heart, LayoutDashboard, LogOut, MapPin, Package, Settings, User } from "lucide-react";
+import { Bell, CreditCard, Heart, LayoutDashboard, MapPin, Package, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,7 @@ export const ACCOUNT_LINKS = [
 const item =
   "flex h-9 shrink-0 items-center gap-2.5 rounded-md px-3 type-label text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
 
-/** Account sidebar. A scrolling row of tabs on small screens. */
+/** Account sidebar. A scrolling row of tabs on small screens. Sign Out lives in the header account menu. */
 export function AccountNav() {
   const pathname = usePathname();
 
@@ -41,15 +41,6 @@ export function AccountNav() {
             </li>
           );
         })}
-        <li className="lg:mt-3 lg:border-t lg:pt-3">
-          {/* POST so a link on another site can't sign the customer out. */}
-          <form action="/account/logout" method="post">
-            <button type="submit" className={cn(item, "w-full")}>
-              <LogOut className="size-4" />
-              Sign Out
-            </button>
-          </form>
-        </li>
       </ul>
     </nav>
   );
