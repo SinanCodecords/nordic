@@ -24,7 +24,6 @@ export function AccountMenu({ email, className }: { email: string | null; classN
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger aria-label="Account menu" className={className}>
         <User className="size-5 stroke-[1.5]" />
-        <span className="absolute top-0.5 right-0.5 size-2 rounded-full bg-success ring-2 ring-background" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" sideOffset={8} className="w-60">

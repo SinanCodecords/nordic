@@ -8,8 +8,7 @@ import { AccountMenu } from "./account-menu";
 const iconLink = "relative grid size-9 place-items-center rounded-full border transition-[background-color] hover:bg-accent";
 
 /**
- * The person icon in the header. Signed out, it starts Shopify login; signed in, it shows a green dot and opens
- * a menu (My Account, Orders, Wishlist, Profile, Sign Out). It reads the login cookie, so it streams in after
+ * The person icon in the header. Signed out, it starts Shopify login; signed in, it opens a menu (My Account, Orders, Wishlist, Profile, Sign Out). It reads the login cookie, so it streams in after
  * the (prerendered) header.
  */
 export function AccountLink() {
