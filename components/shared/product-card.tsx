@@ -84,7 +84,7 @@ export function ProductCard({ product, layout = "grid", imageClassName = "h-[290
       </div>
 
       <div className={cn("space-y-2 p-4", list && "flex min-w-0 flex-1 flex-col justify-center sm:p-6")}>
-        <div className="flex justify-between text-[11px] leading-[14px] font-medium text-muted-foreground">
+        <div className="flex items-center justify-between text-[11px] leading-[14px] font-medium text-muted-foreground">
           <span className="tracking-[0.3px] uppercase">{product.vendor}</span>
           <CompareButton handle={product.handle} title={product.title} />
         </div>
