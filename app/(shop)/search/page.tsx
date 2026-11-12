@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import { CollectionResults, CollectionResultsSkeleton } from "@/components/collection";
 import { CATEGORY_LINKS } from "@/components/collection/data";
 import { HeaderSearch } from "@/components/layout/header-actions";
-import { loadSearchParams, searchProducts } from "@/components/search/search";
-import { pickProducts } from "@/components/shared/demo-products";
+import { getHomeSection } from "@/components/home";
+import { findProducts, loadSearchParams } from "@/components/search/search";
 import { ProductCard } from "@/components/shared/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import CustomBreadcrumb from "~/CustomBreadcrumb";
@@ -17,14 +17,6 @@ export const metadata: Metadata = {
 };
 
 type Props = PageProps<"/search">;
-
-// Shown when there's nothing to search for or nothing matched. Swap for Shopify best sellers later.
-const POPULAR = pickProducts(
-  "silk-slip-dress",
-  "stride-runner-sneakers",
-  "automatic-wristwatch",
-  "wireless-noise-cancel-headphones",
-);
 
 export default function SearchPage({ searchParams }: Props) {
   return (
@@ -44,7 +36,7 @@ export default function SearchPage({ searchParams }: Props) {
 async function SearchContents({ searchParams }: Pick<Props, "searchParams">) {
   const { q } = await loadSearchParams(searchParams);
   const query = q.trim();
-  const products = searchProducts(query);
+  const products = await findProducts(query);
 
   return (
     <>
@@ -64,7 +56,10 @@ async function SearchContents({ searchParams }: Pick<Props, "searchParams">) {
   );
 }
 
-function NoResults({ query }: { query: string }) {
+async function NoResults({ query }: { query: string }) {
+  // Shown when there's nothing to search for or nothing matched.
+  const popular = await getHomeSection("best-sellers", { sortKey: "BEST_SELLING", viewAllHref: "/collections/all" });
+
   return (
     <>
       <div className="mt-8 flex flex-col items-center rounded-lg border px-6 py-14 text-center">
@@ -96,7 +91,7 @@ function NoResults({ query }: { query: string }) {
       <section className="pt-12">
         <h2 className="type-section-heading">Popular Right Now</h2>
         <div className="grid gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-4">
-          {POPULAR.map((p) => (
+          {popular.products.map((p) => (
             <ProductCard key={p.handle} product={p} />
           ))}
         </div>

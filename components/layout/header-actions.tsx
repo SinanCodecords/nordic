@@ -3,7 +3,10 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { type ReactNode, useSyncExternalStore } from "react";
+import { type ReactNode, useCallback, useId, useRef, useState, useSyncExternalStore } from "react";
+import { suggest } from "@/components/search/actions";
+import { SearchSuggestions } from "@/components/search/search-suggestions";
+import type { Suggestions } from "@/lib/shopify/search";
 import { cn } from "@/lib/utils";
 import CustomSearchInput from "~/CustomSearchInput";
 
@@ -38,31 +41,74 @@ export function HeaderShell({ children }: { children: ReactNode }) {
 
 type HeaderSearchProps = { className?: string; inputClassName?: string; defaultValue?: string; onSearch?: () => void };
 
+/** Search box with Shopify suggestions while typing. Enter opens the full results page. */
 export function HeaderSearch({ className, inputClassName, defaultValue, onSearch }: HeaderSearchProps) {
   const router = useRouter();
+  const listId = useId();
+  const [term, setTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<Suggestions | null>(null);
+  const [open, setOpen] = useState(false);
+  const latest = useRef("");
+
+  const close = () => setOpen(false);
+  const picked = () => {
+    close();
+    onSearch?.();
+  };
+
+  // Runs 300ms after typing stops. Ignores answers for anything but the latest text. Must keep the same
+  // identity between renders: the search input re-runs its effect whenever onSearch changes.
+  const lookUp = useCallback(async (value: string) => {
+    const q = value.trim();
+    latest.current = q;
+    if (q.length < 2) {
+      setSuggestions(null);
+      return;
+    }
+    const result = await suggest(q);
+    if (latest.current !== q) return;
+    setTerm(q);
+    setSuggestions(result);
+    setOpen(true);
+  }, []);
 
   return (
     <form
       role="search"
-      className={cn("w-[277px]", className)}
+      className={cn("relative w-[277px]", className)}
       onSubmit={(e) => {
         e.preventDefault();
         const q = String(new FormData(e.currentTarget).get("q") ?? "").trim();
         if (!q) return;
+        close();
         router.push(`/search?q=${encodeURIComponent(q)}`);
         onSearch?.();
       }}
+      // Close when focus leaves the box and its suggestions (e.g. tabbing away or clicking elsewhere).
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) close();
+      }}
+      onFocus={() => suggestions && setOpen(true)}
+      onKeyDown={(e) => e.key === "Escape" && close()}
     >
       <CustomSearchInput
         name="q"
         aria-label="Search products"
+        aria-expanded={open}
+        aria-controls={open ? listId : undefined}
+        autoComplete="off"
         placeholder="Search products..."
         value={defaultValue} // seeds the box; the input keeps its own state while typing
+        onSearch={lookUp}
+        onClear={() => lookUp("")}
         className={cn(
           "h-9 rounded-md border-border bg-field font-heading text-sm tracking-[-0.15px] placeholder:text-placeholder",
           inputClassName,
         )}
       />
+      {open && suggestions && (
+        <SearchSuggestions id={listId} query={term} suggestions={suggestions} onPick={picked} />
+      )}
     </form>
   );
 }

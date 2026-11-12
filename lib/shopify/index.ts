@@ -19,6 +19,7 @@ export * from "./collections";
 export * from "./customer";
 export * from "./cart";
 export * from "./menu";
+export * from "./search";
 
 export async function getProducts({
   first = 50,
