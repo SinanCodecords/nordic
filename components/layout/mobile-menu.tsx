@@ -28,7 +28,7 @@ export function MobileMenu({ links }: { links: { label: string; href: string }[]
       <SheetTrigger
         data-on-hero
         aria-label="Open menu"
-        className="-ml-2 grid size-9 shrink-0 place-items-center rounded-md text-foreground transition-colors hover:bg-accent lg:hidden"
+        className="-ml-2 grid size-9 shrink-0 place-items-center rounded-md text-foreground transition-[background-color] hover:bg-accent lg:hidden"
       >
         <Menu className="size-5 stroke-[1.5]" />
       </SheetTrigger>

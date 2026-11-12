@@ -32,7 +32,7 @@ export async function Header() {
           <Link
             key={`${link.label}-${link.href}`}
             href={link.href}
-            className="rounded-md px-3 py-2 type-nav text-foreground-secondary transition-colors hover:text-foreground"
+            className="rounded-md px-3 py-2 type-nav text-foreground-secondary hover:text-foreground"
           >
             {link.label}
           </Link>
@@ -51,7 +51,7 @@ export async function Header() {
             key={href}
             href={href}
             aria-label={label}
-            className="relative grid size-9 place-items-center rounded-full border transition-colors hover:bg-accent"
+            className="relative grid size-9 place-items-center rounded-full border transition-[background-color] hover:bg-accent"
           >
             <Icon className="size-5 stroke-[1.5]" />
             {label === "Wishlist" && <WishlistCount />}

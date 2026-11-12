@@ -124,7 +124,7 @@ export function ThemeToggle() {
       type="button"
       aria-label="Toggle dark mode"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="grid size-9 place-items-center rounded-full border bg-elevated transition-colors hover:bg-accent dark:bg-white dark:text-[#09090b]"
+      className="grid size-9 place-items-center rounded-full border bg-elevated transition-[background-color] hover:bg-accent dark:bg-white dark:text-[#09090b]"
     >
       <Sun className="size-5 stroke-[1.5] dark:hidden" />
       <Moon className="hidden size-5 stroke-[1.5] dark:block" />

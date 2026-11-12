@@ -5,7 +5,7 @@ import { customerAccountsEnabled, getSignedInShopper } from "@/lib/shopify/custo
 import { cn } from "@/lib/utils";
 import { AccountMenu } from "./account-menu";
 
-const iconLink = "relative grid size-9 place-items-center rounded-full border transition-colors hover:bg-accent";
+const iconLink = "relative grid size-9 place-items-center rounded-full border transition-[background-color] hover:bg-accent";
 
 /**
  * The person icon in the header. Signed out, it starts Shopify login; signed in, it shows a green dot and opens
