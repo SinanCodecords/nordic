@@ -34,7 +34,7 @@ export function AccountMenu({ email, className }: { email: string | null; classN
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {LINKS.map(({ label, href, icon: Icon }) => (
-          <DropdownMenuItem key={href} asChild>
+          <DropdownMenuItem key={href} asChild className="cursor-pointer">
             <Link href={href}>
               <Icon /> {label}
             </Link>
@@ -42,7 +42,7 @@ export function AccountMenu({ email, className }: { email: string | null; classN
         ))}
         <DropdownMenuSeparator />
         {/* POST (not a link) so another site can't sign the shopper out. The form sits outside the menu. */}
-        <DropdownMenuItem asChild variant="destructive">
+        <DropdownMenuItem asChild variant="destructive" className="cursor-pointer">
           <button type="submit" form="sign-out-form" className="w-full">
             <LogOut /> Sign Out
           </button>

@@ -4,6 +4,7 @@ import { Logo } from "@/components/shared/logo";
 import { WishlistCount } from "@/components/wishlist/wishlist-button";
 import { getMenu } from "@/lib/shopify/menu";
 import { AccountLink } from "./account-link";
+import { CartCount } from "./cart-count";
 import { NAV_LINKS } from "./data";
 import { HeaderSearch, HeaderShell, ThemeToggle } from "./header-actions";
 import { MobileMenu } from "./mobile-menu";
@@ -54,7 +55,7 @@ export async function Header() {
             className="relative grid size-9 place-items-center rounded-full border transition-[background-color] hover:bg-accent"
           >
             <Icon className="size-5 stroke-[1.5]" />
-            {label === "Wishlist" && <WishlistCount />}
+            {label === "Wishlist" ? <WishlistCount /> : <CartCount />}
           </Link>
         ))}
       </div>
