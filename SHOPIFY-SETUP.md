@@ -83,6 +83,26 @@ Never share or commit this file.
 ## 13. Support email
 - Put your real support address in `lib/store-info.ts` (shown on Contact and used by the contact form)
 
+## 14. Send shoppers back to this site after checkout
+Checkout and the order confirmation page are always hosted by Shopify. Their "Continue shopping" button and
+logo link to the Shopify Online Store (`something.myshopify.com`), so make that store forward every visit here:
+
+- **Online Store → Themes → ⋯ → Edit code**
+- Paste this as the first thing inside `<head>` in `layout/theme.liquid`, then **Save**.
+  Leave `layout/password.liquid` alone: while the store password is on, checkout sends shoppers to that page
+  to type the password, and forwarding it would make checkout impossible.
+
+```liquid
+{%- unless request.design_mode -%}
+<script>
+  // Everything is on the headless site. Same paths, except Shopify's /pages/contact becomes /contact.
+  location.replace("https://nordic-puce.vercel.app" + location.pathname.replace(/^\/pages\//, "/") + location.search);
+</script>
+{%- endunless -%}
+```
+
+Change the address when the site moves to its own domain.
+
 ## Optional
 - Want to test coupons? Create one in **Discounts**.
 - Store has a password? Checkout will ask for it while testing. That's normal.
