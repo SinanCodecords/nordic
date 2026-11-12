@@ -14,7 +14,7 @@ const text = "max-w-[672px] type-body leading-[22.75px] text-muted-foreground";
 
 type Props = {
   product: ProductDetail;
-  /** Published Judge.me reviews. Empty for demo products, like the Figma design. */
+  /** Published Judge.me reviews. Empty until Judge.me is set up. */
   reviews: Review[];
   /** Judge.me is set up and this is a real Shopify product. */
   canReview: boolean;
@@ -88,7 +88,7 @@ function Reviews({ product, reviews, canReview }: Props) {
   const [sort, setSort] = useState<Sort>("Most Helpful");
   const sorted = useMemo(() => reviews.toSorted(SORTERS[sort]), [reviews, sort]);
 
-  // Real reviews give the real average; demo products keep their Figma rating.
+  // Real reviews give the live average; otherwise the rating Judge.me saved on the product.
   const count = reviews.length || product.reviewCount;
   const rating = reviews.length
     ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) * 10) / 10

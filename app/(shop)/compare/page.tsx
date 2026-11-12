@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { COMPARE_COOKIE, CompareTable, EmptyCompare, parseCompare } from "@/components/compare";
-import { getProductDetail, type ProductDetail } from "@/components/product";
+import { getProductDetails } from "@/components/product/load";
 import { Skeleton } from "@/components/ui/skeleton";
 import CustomBreadcrumb from "~/CustomBreadcrumb";
 
@@ -28,7 +28,7 @@ export default function ComparePage() {
 // Reads the compare cookie, so it streams in after the breadcrumb.
 async function CompareContents() {
   const handles = parseCompare((await cookies()).get(COMPARE_COOKIE)?.value);
-  const products = handles.map(getProductDetail).filter((p): p is ProductDetail => !!p);
+  const products = await getProductDetails(handles);
   if (!products.length) return <EmptyCompare />;
   return <CompareTable products={products} />;
 }

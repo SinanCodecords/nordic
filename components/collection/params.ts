@@ -55,10 +55,7 @@ export function filterProducts(products: ProductCardData[], params: CollectionPa
 
   switch (sort) {
     case "newest":
-      // Demo products have no date; their lists are oldest-first.
-      return result.every((p) => p.createdAt)
-        ? result.toSorted((a, b) => b.createdAt!.localeCompare(a.createdAt!))
-        : result.toReversed();
+      return result.toSorted((a, b) => b.createdAt.localeCompare(a.createdAt));
     case "price-asc":
       return result.toSorted((a, b) => price(a) - price(b));
     case "price-desc":

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ProductDetail } from "@/components/product";
+import { NoImage } from "@/components/shared/product-card";
 import { Stars } from "@/components/shared/stars";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/shopify/helpers";
@@ -26,8 +27,14 @@ const ROWS: Row[] = [
     cell: (p) => (
       <span className="flex items-center gap-1.5">
         <Stars value={p.rating} />
-        <span className="font-medium">{p.rating}</span>
-        <span className="text-muted-foreground">({p.reviewCount})</span>
+        {p.reviewCount > 0 ? (
+          <>
+            <span className="font-medium">{p.rating}</span>
+            <span className="text-muted-foreground">({p.reviewCount})</span>
+          </>
+        ) : (
+          <span className="text-muted-foreground">No reviews yet</span>
+        )}
       </span>
     ),
   },
@@ -56,7 +63,7 @@ const ROWS: Row[] = [
     cell: (p) => (
       <ul className="flex flex-wrap gap-1.5">
         {p.colors.map((c) => (
-          <li key={c.hex} title={c.name} className="size-4 rounded-full border" style={{ backgroundColor: c.hex }}>
+          <li key={c.name} title={c.name} className="size-4 rounded-full border" style={{ backgroundColor: c.hex }}>
             <span className="sr-only">{c.name}</span>
           </li>
         ))}
@@ -109,7 +116,11 @@ export function CompareTable({ products }: { products: ProductDetail[] }) {
               {products.map((p) => (
                 <th key={p.handle} scope="col" className="p-4 text-left font-normal">
                   <div className="relative aspect-square overflow-hidden rounded-md border bg-elevated">
-                    <Image src={p.image} alt={p.title} fill sizes="260px" className="object-cover" />
+                    {p.image ? (
+                      <Image src={p.image} alt={p.title} fill sizes="260px" className="object-cover" />
+                    ) : (
+                      <NoImage />
+                    )}
                     <RemoveFromCompare handle={p.handle} title={p.title} />
                   </div>
                   <p className="pt-3 text-[11px] leading-[14px] font-medium tracking-[0.3px] text-muted-foreground uppercase">
@@ -126,7 +137,7 @@ export function CompareTable({ products }: { products: ProductDetail[] }) {
               {free > 0 && (
                 <td className="p-4">
                   <Link
-                    href="/collections/new-arrivals"
+                    href="/collections/all"
                     className="flex aspect-square flex-col items-center justify-center gap-2 rounded-md border border-dashed text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
                   >
                     <Plus className="size-6 stroke-[1.5]" />

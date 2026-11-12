@@ -2,7 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getProductDetail, type ProductDetail } from "@/components/product";
+import { getProductDetails } from "@/components/product/load";
 import { parseRecent, parseWishlist, RECENT_COOKIE, WISHLIST_COOKIE } from "@/components/wishlist/shared";
 import { type Customer, customerAccountsEnabled, getCustomer } from "@/lib/shopify/customer";
 
@@ -54,15 +54,12 @@ export async function getAccount(path: string): Promise<Account> {
   return { customer, demo: false };
 }
 
-const toProducts = (handles: string[]) =>
-  handles.map(getProductDetail).filter((p): p is ProductDetail => !!p);
-
 /** Products saved with the heart button (kept in a cookie on this device). */
 export async function getWishlistProducts() {
-  return toProducts(parseWishlist((await cookies()).get(WISHLIST_COOKIE)?.value));
+  return getProductDetails(parseWishlist((await cookies()).get(WISHLIST_COOKIE)?.value));
 }
 
 /** Product pages opened recently on this device, newest first. */
 export async function getRecentlyViewed() {
-  return toProducts(parseRecent((await cookies()).get(RECENT_COOKIE)?.value));
+  return getProductDetails(parseRecent((await cookies()).get(RECENT_COOKIE)?.value));
 }

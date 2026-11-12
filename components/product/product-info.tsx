@@ -29,7 +29,7 @@ export function ProductInfo({ product }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [pending, startTransition] = useTransition();
 
-  // The Shopify variant for the chosen colour + size. Demo products have none and can't be bought.
+  // The Shopify variant for the chosen colour + size. Undefined when the store doesn't sell that combination.
   const variant = product.variants.find((v) => (!v.color || v.color === color?.name) && (!v.size || v.size === size));
   const soldOut = variant ? !variant.available : product.stock === 0;
   const stock = variant ? (variant.available ? variant.quantity : 0) : product.stock;
@@ -43,7 +43,7 @@ export function ProductInfo({ product }: Props) {
 
   const buy = (action: typeof addItem) => {
     if (!variant) {
-      toast("This product can't be bought yet.");
+      toast("This colour and size combination isn't available.");
       return;
     }
     startTransition(async () => {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { COLLECTIONS, CollectionResults, CollectionResultsSkeleton } from "@/components/collection";
+import { COLLECTION_DESCRIPTIONS, CollectionResults, CollectionResultsSkeleton } from "@/components/collection";
 import type { CollectionData } from "@/components/collection/data";
 import { toProductCard } from "@/components/shared/from-shopify";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,7 +17,7 @@ async function loadCollection(params: Props["params"]): Promise<CollectionData &
   return {
     title: collection.title,
     // Our own wording is the fallback while the collection's description is empty in Shopify.
-    description: collection.description || COLLECTIONS[handle]?.description || "",
+    description: collection.description || COLLECTION_DESCRIPTIONS[handle] || "",
     seoTitle: collection.seo.title ?? undefined,
     products: collection.products.map(toProductCard),
   };

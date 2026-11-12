@@ -61,7 +61,7 @@ async function getPublishedReviews(): Promise<Record<string, Review[]>> {
   return byProduct;
 }
 
-/** Published reviews for one product. Empty for demo products or when Judge.me isn't set up. */
+/** Published reviews for one product. Empty when Judge.me isn't set up. */
 export async function getProductReviews(productId: string | undefined): Promise<Review[]> {
   if (!reviewsEnabled || !productId) return [];
   try {

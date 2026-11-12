@@ -1,4 +1,4 @@
-import { COLLECTIONS } from "@/components/collection/data";
+import { COLLECTION_DESCRIPTIONS } from "@/components/collection/data";
 import { toProductCard } from "@/components/shared/from-shopify";
 import type { ProductCardData } from "@/components/shared/product-card";
 import { getCollection, getProducts } from "@/lib/shopify";
@@ -25,7 +25,7 @@ export async function getCategoryTiles(): Promise<CategoryTile[]> {
       if (!collection) return null;
       return {
         title: collection.title,
-        description: collection.description || COLLECTIONS[handle]?.description || "",
+        description: collection.description || COLLECTION_DESCRIPTIONS[handle] || "",
         href: `/collections/${handle}`,
         image: collection.image?.url ?? `/images/products/${image}.jpg`,
       };
