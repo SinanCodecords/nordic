@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useCallback, useId, useRef, useState, useSyncExternalStore } from "react";
 import { suggest } from "@/components/search/actions";
 import { SearchSuggestions } from "@/components/search/search-suggestions";
@@ -25,10 +25,13 @@ export function HeaderShell({ children }: { children: ReactNode }) {
     () => window.scrollY > 8,
     () => false,
   );
+  // Only the home page has the lime hero behind the header.
+  const overHero = usePathname() === "/" && !scrolled;
 
   return (
     <header
       data-scrolled={scrolled || undefined}
+      data-over-hero={overHero || undefined}
       className={cn(
         "sticky top-0 z-50 flex h-[69px] items-center gap-3 border-b border-transparent px-4 transition-[background-color,border-color,box-shadow] duration-300 sm:px-6 lg:pr-[55px] lg:pl-[78px]",
         scrolled && "border-border bg-background/90 shadow-sm backdrop-blur-md",

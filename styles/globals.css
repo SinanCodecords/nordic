@@ -154,15 +154,17 @@
   --sidebar-ring: #737373;
 }
 
-/* On pages with the lime hero, the logo and nav sit on lime and stay dark in both themes
-   (until the page is scrolled and the sticky header gets its own background). */
+/* At the top of the home page the logo and nav sit on the lime hero and stay dark in both themes
+   (until the page is scrolled and the sticky header gets its own background). HeaderShell sets
+   data-over-hero from the current path: Next keeps visited pages hidden in the DOM, so checking
+   for the hero element itself would leave other pages with dark text on a dark background. */
 @layer base {
-  body:has([data-lime-hero]) header:not([data-scrolled]) [data-on-hero] {
+  header[data-over-hero] [data-on-hero] {
     --foreground: #171717;
     --foreground-secondary: #4b4b4b;
   }
   /* Below 1024px the lime runs under the whole header, including the icons on the right. */
-  body:has([data-lime-hero]) header:not([data-scrolled]) [data-on-hero-mobile] {
+  header[data-over-hero] [data-on-hero-mobile] {
     @variant max-lg {
       --foreground: #171717;
       --border: rgb(23 23 23 / 15%);

@@ -6,7 +6,7 @@ import { InstagramIcon, YoutubeIcon } from "@/components/shared/social-icons";
 // The lime background, model and dark blur are invariant across light and dark themes.
 export function Hero() {
   return (
-    <section data-lime-hero className="relative -mt-[69px] overflow-hidden bg-background pt-[69px] text-[#171717] lg:h-[1010px]">
+    <section className="relative -mt-[69px] overflow-hidden bg-background pt-[69px] text-[#171717] lg:h-[1010px]">
       <div className="absolute inset-0 bg-lime lg:[clip-path:polygon(0_0,61.7%_0,95.4%_100%,0_100%)]" />
       <BlurShape />
 
