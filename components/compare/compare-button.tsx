@@ -4,7 +4,7 @@ import { ArrowLeftRight, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { MAX_COMPARE } from "./shared";
+import { comparePill, MAX_COMPARE } from "./shared";
 import { toggleCompare, useCompareList } from "./store";
 
 /** The "Compare" pill on product cards. Filled once the product is in the compare list. */
@@ -32,7 +32,8 @@ export function CompareButton({ handle, title }: { handle: string; title: string
       aria-label={added ? `Remove ${title} from compare` : `Add ${title} to compare`}
       onClick={onClick}
       className={cn(
-        "relative z-10 -my-1 inline-flex h-6 items-center gap-1 rounded-full border px-2.5 text-[11px] font-semibold text-foreground transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+        comparePill,
+        "relative z-10 -my-1 transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
         added && "border-primary bg-primary text-primary-foreground hover:bg-primary/90",
       )}
     >
