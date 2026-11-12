@@ -30,11 +30,24 @@ type RawReview = {
  * All published reviews, grouped by Shopify product number. Judge.me's list endpoint filters by its own
  * product ID, not Shopify's, so we read the whole list once and cache it for an hour.
  */
-async function getPublishedReviews(): Promise<Record<string, Review[]>> {
+async function getPublishedReviews(): Promise<Record<string, Review[]> | null> {
   "use cache";
-  cacheLife("hours");
   cacheTag("reviews");
 
+  // Errors are handled in here: one escaping a cached function is reported by the build.
+  // A failure is only kept for minutes, so reviews come back soon after Judge.me does.
+  try {
+    const reviews = await fetchPublishedReviews();
+    cacheLife("hours");
+    return reviews;
+  } catch (error) {
+    console.error("Couldn't load reviews", error);
+    cacheLife("minutes");
+    return null;
+  }
+}
+
+async function fetchPublishedReviews(): Promise<Record<string, Review[]>> {
   const byProduct: Record<string, Review[]> = {};
   for (let page = 1; page <= 50; page++) {
     const params = new URLSearchParams({ shop_domain: shop!, per_page: "100", page: String(page) });
@@ -64,12 +77,7 @@ async function getPublishedReviews(): Promise<Record<string, Review[]>> {
 /** Published reviews for one product. Empty when Judge.me isn't set up. */
 export async function getProductReviews(productId: string | undefined): Promise<Review[]> {
   if (!reviewsEnabled || !productId) return [];
-  try {
-    return (await getPublishedReviews())[productId.split("/").pop()!] ?? [];
-  } catch (error) {
-    console.error("Couldn't load reviews", error);
-    return [];
-  }
+  return (await getPublishedReviews())?.[productId.split("/").pop()!] ?? [];
 }
 
 /** Sends a review the same way Judge.me's own form does. It may wait for approval before it shows. */
